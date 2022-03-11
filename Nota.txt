@@ -5,11 +5,11 @@ Definiciones propuestas:
 
 ENTRADAS:
 
-3 Sensores Capacitivos
+3 Sensores Capacitivos / puede ser digital o analogico, brinda una señal de salida que varia entre 0 y vcc segun la distaancia, se alimenta con 6 a 12 volt, tiene que usar una fuente a 12
 
-1 Sensor Óptico Reflectivo
+1 Sensor Óptico Reflectivo / DIGITAL , trabaja con 5 volt , se utiliza directamente del regulador 7805
 
-1 Sensor de temperatura
+1 Sensor de temperatura / 
 
 SALIDAS
 
