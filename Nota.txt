@@ -1,1 +1,32 @@
 conexion ok - mauro.z
+
+
+Definiciones propuestas:
+
+ENTRADAS:
+
+3 Sensores Capacitivos
+
+1 Sensor Óptico Reflectivo
+
+1 Sensor de temperatura
+
+SALIDAS
+
+1 Electroválvula Líquido antiderrame
+
+CRITERIOS PARA EL DISEÑO
+
+– Diseño del Hardware debe ser con SOC ESP32 WROOM soldado a PCB y que se programble desde la misma.
+
+– 2 Entradas Conversoras de 4-20mA a 0-3.3V.
+
+– Respetar Definiciones de Entradas Propuestas.
+
+– Conversor CH340 C/G con Jumper.
+
+– Fuente a Placa.
+
+– Todos los componentes arriba.
+
+– Adaptar a este GABINETE (50X15X25MM)
