@@ -25,7 +25,7 @@
                 <!-- TEMP -->
                 <div class="col-12 ">
                   <div class="  weather">
-                    <div class="mdl-card__supporting-text mdl-card--expand color-azul-1 form-inline">
+                    <div class=" mdl-card--expand color-azul-1 form-inline">
                       <div class="col-6 pt-3 pb-3 pl-0 pr-0">
                         <div class="mdl-card__title">
                           <h2 class="mdl-card__title-text">Temperatura</h2>
@@ -47,7 +47,7 @@
                 <!-- HUM-->
                 <div class="col-12 ">
                   <div class="  weather">
-                    <div class="mdl-card__supporting-text mdl-card--expand color-azul-1 form-inline">
+                    <div class=" mdl-card--expand color-azul-1 form-inline">
                       <div class="col-6 pt-3 pb-3 pl-0 pr-0">
                         <div class="mdl-card__title">
                           <h2 class="mdl-card__title-text">Nivel Melasa</h2>
@@ -69,7 +69,7 @@
                 <!-- H2O -->
                 <div class="col-12 ">
                   <div class="  weather">
-                    <div class="mdl-card__supporting-text mdl-card--expand color-azul-1 form-inline">
+                    <div class=" mdl-card--expand color-azul-1 form-inline">
                       <div class="col-6 pt-3 pb-3 pl-0 pr-0">
                         <div class="mdl-card__title">
                           <h2 class="mdl-card__title-text mr-1">Nivel Espuma</h2>
