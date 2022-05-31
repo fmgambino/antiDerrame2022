@@ -1,8 +1,8 @@
-#include <Wire.h>   // incluye libreria para interfaz I2C
+//#include <Wire.h>   // incluye libreria para interfaz I2C
 //#include <RTClib.h>   // incluye libreria para el manejo del modulo RTC
-#include <OneWire.h>
+//#include <OneWire.h>
 
-#include <DallasTemperature.h>
+//#include <DallasTemperature.h>
 
 //RTC_DS3231 rtc;     // crea objeto del tipo RTC_DS3231
 
@@ -16,8 +16,8 @@ int sCap3 =27 ;
 float sOptico =34 ;
 //float sTemp = 35;
 const int oneWireBus = 35;
-OneWire oneWire(oneWireBus);
-DallasTemperature sensors (&oneWire);
+//OneWire oneWire(oneWireBus);
+//DallasTemperature sensors (&oneWire);
 
 int sAmp1 = 32; // Entrada 4-20 mA
 int sAmp2 = 33; // Entrada 4-20 mA
@@ -56,7 +56,7 @@ void MosFet2();
 
 void setup () {
  Serial.begin(115200);    // inicializa comunicacion serie a 9600 bps
- sensors.begin();
+// sensors.begin();
  Serial.println("DHTxx test by EG!");
 
  pinMode(sCap1, INPUT);
@@ -184,7 +184,7 @@ void Optico(){
 
 void Temp(){
     //Leer la temperatura
-
+/*
   Serial.print("Mandando comandos a los sensores ");
   sensors.requestTemperatures();
   //Lectura en grados celsius
@@ -200,6 +200,7 @@ void Temp(){
   // Lectura de la temperatura cada 100 ms
 
   delay(100);
+  */
 }
 
 void Amp1(){
