@@ -7,7 +7,7 @@
 //RTC_DS3231 rtc;     // crea objeto del tipo RTC_DS3231
 
 //ENTRADAS
-
+/*
 int bWiFi = 23;
 
 int sCap1 =25 ;
@@ -21,7 +21,7 @@ const int oneWireBus = 35;
 
 int sAmp1 = 32; // Entrada 4-20 mA
 int sAmp2 = 33; // Entrada 4-20 mA
-
+*/
 //SALIDAS
 
 int relay1 = 13;
@@ -36,7 +36,7 @@ int mosfet2 = 11;
 //************************************
 
 //void rtcEG();
-
+/*
 void Cap1();
 void Cap2();
 void Cap3();
@@ -46,7 +46,7 @@ void Temp();
 
 void Amp1();
 void Amp2();
-
+*/
 void Rele1();
 void Rele2();
 
@@ -58,14 +58,14 @@ void setup () {
  Serial.begin(115200);    // inicializa comunicacion serie a 9600 bps
 // sensors.begin();
  Serial.println("DHTxx test by EG!");
-
+/*
  pinMode(sCap1, INPUT);
  pinMode(sCap2, INPUT);
  pinMode(sCap3, INPUT);
 
  pinMode(sOptico, INPUT);
 
-
+*/
  pinMode(relay1, OUTPUT);
  pinMode(relay2, OUTPUT);
 
@@ -91,7 +91,7 @@ void loop () {
 
 
    Serial.println("LECTURAS ENTRADAS ");
-
+/*
   Cap1();
   Cap2();
   Cap3();
@@ -101,7 +101,7 @@ void loop () {
 
   Amp1();
   Amp2();
-
+*/
    digitalWrite(relay1,HIGH);
    delay(500);
    digitalWrite(relay1,LOW);
@@ -109,17 +109,17 @@ void loop () {
 
    digitalWrite(relay2,LOW);
    delay(500);
-   digitalWrite(relay2,LOW);
+   digitalWrite(relay2,HIGH);
    delay(500);
 
    digitalWrite(mosfet1,LOW);
    delay(500);
-   digitalWrite(mosfet1,LOW);
+   digitalWrite(mosfet1,HIGH);
    delay(500);
 
    digitalWrite(mosfet2,LOW);
    delay(500);
-   digitalWrite(mosfet2,LOW);
+   digitalWrite(mosfet2,HIGH);
    delay(500);
 }
 /*
@@ -143,6 +143,8 @@ void rtcEG(){
 
 }
 */
+
+
 //SENSOR OPTICO 1 - NIVEL BAJO
 void Cap1(){
   int estadoCap1=0;
