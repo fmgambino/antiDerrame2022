@@ -24,6 +24,15 @@ int mosfet2 = 12;
 int estadoCap1 = 0;
 int estadoCap2 = 0;
 int estadoCap3 = 0;
+
+// VARIABLES GLOBALES
+
+int nivCap = 0;    // indica el nivel segun se activan los capasitores , 0: ninguno activo , 1: cap1 activo , 2: cap2 activo, 3: cap3 activo
+int nivOptico = 0; // indica si se detecto un objeto 0: si no se detecto objeto, 1: si se detecto objeto
+float temp = 0;    // indica el valor de la temperatura final
+float varConversor1 = 0; // indica valor en tension del conversor 1 de 4-20 mA
+float varConversor2 = 0; // indica valor en tension del conversor 2 de 4-20 mA
+
 //************************************
 //***** DECLARACION FUNCIONES ********
 //************************************
@@ -82,76 +91,99 @@ void loop()
 
   Amp1();
   Amp2();
- 
+
 }
 
 // SENSOR OPTICO 1 - NIVEL BAJO
 void Cap1()
-{  
+{
   estadoCap1 = digitalRead(sCap1);
   if (estadoCap1 == HIGH)
-  {
-    // turn LED on:
+  { //aqui poner codigo para mandar dato si se detecto objeto
     Serial.println("cap 1 activado ");
-    delay(10);
-    digitalWrite(relay1, HIGH);  
+    nivCap = 1;
   }
-  else{
+  else {
+    //aqui poner codigo para mandar dato si NO se detecto objeto
     Serial.println("cap 1 Apagado ");
-    digitalWrite(relay1, LOW);
-    }
+    nivCap = 0;
+  }
 }
 
 void Cap2()
 {
-  
   estadoCap2 = digitalRead(sCap2);
   if (estadoCap2 == HIGH)
-  {
-    // turn LED on:
+  { //aqui poner codigo para mandar dato si se detecto objeto
     Serial.println("cap 2 activado ");
-    digitalWrite(relay2, HIGH);  
+    nivCap = 2;
   }
-  else{
+  else {
+    //aqui poner codigo para mandar dato si NO se detecto objeto
     Serial.println("cap 2 Apagado ");
-    digitalWrite(relay2, LOW);
-    }
+    nivCap = 1;
+  }
 }
 
 void Cap3()
 {
-  
   estadoCap3 = digitalRead(sCap3);
   if (estadoCap3 == HIGH)
   {
-    // turn LED on:
+    //aqui poner codigo para mandar dato si se detecto objeto
     Serial.println("cap 3 activado ");
-    digitalWrite(mosfet1, HIGH);
+    nivCap = 3;
   }
-  else{
+  else {
+    //aqui poner codigo para mandar dato si NO se detecto objeto
     Serial.println("cap 3 Apagado ");
-    digitalWrite(mosfet1, LOW);
-    }
+    nivCap = 2;
+  }
 }
 
 void Optico()
 {
-  Serial.print("Valor Sensor Optico     : ");
-  Serial.println(analogRead(sOptico));
-  float volts = analogRead(sOptico)*(3/4095);  
-  Serial.println(analogRead(volts));
+  int ValOptico = analogRead(sOptico);
+  Serial.print("Valor Sensor Optico     : "  );
+  Serial.println(ValOptico);
+  if (ValOptico < 1000 ) {
+    //aqui poner codigo para mandar dato si se detecto objeto
+    Serial.println("se detecto objeto");
+    nivOptico = 1;
+  }
+  else {
+    //aqui poner codigo para mandar dato si NO se detecto objeto
+    Serial.println("Ningun objeto detectado");
+    nivOptico = 0;
+  }
 }
 
 void Temp()
-{
-  Serial.print("Valor Sensor Temperatura: ");
-  Serial.println(analogRead(sTemp));
+{  
+  int sum = 0;
+  for (int i = 0; i < 1000; i++) {
+    sum = sum + analogRead(sTemp); // Almacenos la lectura analogica
+  }
+  int promedio = sum / 1000;
+  int y = promedio;
+  float x = (1000 * ( y ) / 9107.0) + 6.5;
+  temp = x; // Variable de temperatura que se va a mostrar
+  Serial.print("temperatura= ");
+  Serial.println(temp);  
 }
 
 void Amp1()
 {
+  int conversor1 = analogRead(sAmp1);
+  varConversor1 = map(conversor1, 0, 4095, 0, 5);
+  Serial.print("Conversor1  = ");
+  Serial.println(varConversor1);
 }
 
 void Amp2()
 {
+  int conversor2 = analogRead(sAmp1);
+  varConversor2 = map(conversor2, 0, 4095, 0, 5);
+  Serial.print("Conversor2  = ");
+  Serial.println(varConversor2);
 }
