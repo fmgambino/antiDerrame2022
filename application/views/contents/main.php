@@ -131,6 +131,7 @@
   </div>
 </main>
 
+
 <script type="text/javascript">
   var css_file = document.createElement("link");
   var widgetUrl = location.href;
@@ -287,8 +288,7 @@
       } else {
         console.log("Suscrito al Broker con Exito!");
         console.log("Proyecto de Inversión");
-        console.log("San Miguel de Tucumán - Tucumán - Argentina");
-        console.log("by ELECTRÓNICA GAMBINO");
+        console.log("San Miguel de Tucumán - Tucumán - Argentina");        
         console.log("2022");
       }
 
@@ -305,7 +305,7 @@
 
   client.on('message', (topic, message) => {
     console.log('Msg desde el topico: ', topic, ' ----> ', message.toString());
-
+/*
     if (topic == device_topic + "data") {
       var splitted = message.toString().split(",");
 
@@ -436,6 +436,7 @@
       }
 
     }
+    */
   })
 
   client.on('reconnect', (error) => {
@@ -531,3 +532,4 @@
 
   /*----------------*/
 </script>
+<script src="<?php echo base_url('js/progresbarlmz.js') ?>"></script>
