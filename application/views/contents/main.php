@@ -130,7 +130,7 @@
   </div>
   </div>
 </main>
-<script src="<?php echo base_url('js/progresbarlmz.js') ?>"></script>
+
 <script type="text/javascript">
   var css_file = document.createElement("link");
   var widgetUrl = location.href;

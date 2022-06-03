@@ -255,3 +255,4 @@
     border-radius: 50%;
   }
 </style>
+<script src="<?php echo base_url('js/progresbarlmz.js') ?>"></script>
