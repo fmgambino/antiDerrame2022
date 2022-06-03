@@ -120,7 +120,7 @@ var gTemp = 0;
       $("#display_cdtv").html(cdtv);
 
       gTemp = tempamb;
-      console.log('valor de global de temperatura  =' + gTemp);
+      console.log('valor de global de temperatura  en Script=' + gTemp);
       if (niv == 1) {
         $("#display_niv").html("ALTO");
       } else {
