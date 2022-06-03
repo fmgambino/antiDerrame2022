@@ -9,6 +9,7 @@ let valorProgreso = 0;
 let Nivelinicial = 0;
 let EspumaInicial = 0;
 
+var gTemp = 0;
 
 console.log('valor de global de temperatura  en sidebar =' + gTemp);
 
