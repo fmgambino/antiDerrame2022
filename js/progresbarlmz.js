@@ -1,3 +1,4 @@
+let valTemperatura = document.querySelector(".weather-temperature");
 let progresBar = document.querySelector(".progresTemp");
 let valorContenedor = document.querySelector(".valorTemp");
 let progresNivel = document.querySelector(".progresNivel");
@@ -11,7 +12,7 @@ let EspumaInicial = 0;
 
 var gTemp = 0;
 
-console.log('valor de global de temperatura  en sidebar =' + gTemp);
+console.log(valTemperatura);
 
 let valorFinalProgreso = gTemp;
 let valorFinalNivel = 39;
