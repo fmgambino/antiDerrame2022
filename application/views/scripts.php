@@ -112,7 +112,7 @@
 
 
       $("#display_co2").html(co2);
-      $("#display_tempamb").html(tempamb);
+      $("#display_tempamb").html(tempamb);      
       $("#display_hum").html(hum);
       $("#display_ph").html(ph);
       $("#display_cdtv").html(cdtv);
@@ -129,7 +129,7 @@
       } else {
         $("#display_sw1").prop('checked', "");
       }
-
+/*
       if (switch2 == "1") {
         $("#display_sw2").prop('checked', true);
       } else {
@@ -141,7 +141,7 @@
       } else {
         $("#display_sw3").prop('checked', "");
       }
-
+*/
 
     }
 
@@ -163,7 +163,7 @@
       client.publish(device_topic + 'actions/sw1', "0");
     }
   }
-
+/*
   function sw2_change() {
     if ($('#display_sw2').is(":checked")) {
       client.publish(device_topic + 'actions/sw2', "1");
@@ -185,7 +185,7 @@
     value = $('#display_slider').val();
     client.publish(device_topic + 'actions/slider', value);
   }
-
+*/
   //SE CREA FUNCION PARA ENVIO DE DATOS DEL FORMULARIO PARAMETROS
 
 </script>
