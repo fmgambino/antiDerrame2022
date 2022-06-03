@@ -55,17 +55,17 @@ class Devices extends CI_Controller {
 			$_SESSION['msg_type'] = "warning";
 			$_SESSION['msg_title'] = "Advertencia!";
 			$_SESSION['msg_body'] = "Serial number alreade exist!";
-			$_SESSION['msg_footer'] = "https://liandev.net";
+			$_SESSION['msg_footer'] = "https://liandev.tk";
 		}elseif ($result == "success"){
 			$_SESSION['msg_type'] = "success";
 			$_SESSION['msg_title'] = "Felicidades!";
 			$_SESSION['msg_body'] = "El Dispositivo se añadió Satisfactoriamente";
-			$_SESSION['msg_footer'] = "https://liandev.net";
+			$_SESSION['msg_footer'] = "https://liandev.tk";
 		}elseif($result == "fail"){
 			$_SESSION['msg_type'] = "fail";
 			$_SESSION['msg_title'] = "Error!";
 			$_SESSION['msg_body'] = "Error al añadir Dispositivo";
-			$_SESSION['msg_footer'] = "https://liandev.net";
+			$_SESSION['msg_footer'] = "https://liandev.tk";
 		}
 		redirect(base_url('devices'), 'refresh');
 	}
@@ -84,7 +84,7 @@ class Devices extends CI_Controller {
 	}
 
 	//ENVIO DATOS MQTT
-
+/*
 	public function parametros() 
 	{
 		//$this->input->post('ptemp');
@@ -102,7 +102,7 @@ class Devices extends CI_Controller {
 		die('ok');
 		
 	}
-   
+   */
 
 
 }
