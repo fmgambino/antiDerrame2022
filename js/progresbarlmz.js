@@ -12,7 +12,7 @@ let EspumaInicial = 0;
 
 
 
-console.log(gTemp);
+
 
 let valorFinalProgreso = 25;
 let valorFinalNivel = 39;
