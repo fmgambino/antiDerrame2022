@@ -83,26 +83,7 @@ class Devices extends CI_Controller {
 		}
 	}
 
-	//ENVIO DATOS MQTT
-/*
-	public function parametros() 
-	{
-		//$this->input->post('ptemp');
-		//$this->input->post('phum');
-		//$this->input->post('pco2');
-		//$this->input->post('ptime');
-
-		var_dump ($this->input->post('formtempmin'));
-		var_dump ($this->input->post('formtempmax'));
-		var_dump ($this->input->post('formhummin'));
-		var_dump ($this->input->post('formhummax'));
-		var_dump ($this->input->post('formco2min'));
-		var_dump ($this->input->post('formco2max'));
-		var_dump ($this->input->post('formtime'));
-		die('ok');
-		
-	}
-   */
+	
 
 
 }
