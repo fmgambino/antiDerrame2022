@@ -161,10 +161,10 @@ void Optico()
 void Temp()
 {  
   int sum = 0;
-  for (int i = 0; i < 1000; i++) {
+  for (int i = 0; i < 100; i++) {
     sum = sum + analogRead(sTemp); // Almacenos la lectura analogica
   }
-  int promedio = sum / 1000;
+  int promedio = sum / 100;
   int y = promedio;
   float x = (1000 * ( y ) / 9107.0) + 6.5;
   temp = x; // Variable de temperatura que se va a mostrar
