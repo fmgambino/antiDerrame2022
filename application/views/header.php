@@ -7,7 +7,7 @@
             <img src="<?php echo base_url('images/liandev2.png') ?>" class="logo2">
         </div>
         <div class="mdl-layout__header-row ml-auto">
-            <select id="device_select" class="btn hc-select-device " onchange="change_device()" class="" name="">
+            <select id="device_select" class="btn hc-select-device text-center" onchange="change_device()" class="" name="">
                 <option value="">Selecione Dispositivo</option>
                 <?php foreach ($devices as $device) { ?>
                     <option value="<?php echo $device['device_id'] ?>" <?php if ($_SESSION['selected_device'] == $device['device_id']) {
@@ -27,16 +27,16 @@
             </button>
 
             <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp settings-dropdown" for="more">
-                <a class="mdl-menu__item" href="https://hydrocrop.net/app/devices">
+                <a class="mdl-menu__item" href="https://liandev.tk/app/devices">
                     Configuración
                 </a>
-                <a class="mdl-menu__item" href="https://hydrocrop.net/soporte/">
+                <a class="mdl-menu__item" href="https://liandev.tk/soporte/">
                     Soporte
                 </a>
-                <a class="mdl-menu__item" href="https://hydrocrop.net/faq">
+                <a class="mdl-menu__item" href="https://liandev.tk/faq">
                     F.A.Q.
                 </a>
-                <a href="https://hydrocrop.net">
+                <a href="https://liandev.tk">
                     <li class="mdl-menu__item mdl-list__item">
                         <span class="mdl-list__item-primary-content">
                             <i class="material-icons mdl-list__item-icon text-color--secondary">exit_to_app</i>

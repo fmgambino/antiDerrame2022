@@ -32,7 +32,7 @@
                           <img src="<?php echo base_url('images/iconoTemp.svg') ?>" class="icono">
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand hc-contenedor row">
-                          <p id="display_tempamb" class="weather-temperature hc-valor">--</p>
+                          <p id="display_tempamb" class="weather-temperature hc-valor mr-3">--</p>
                           <h1 class="hc-unidades">°C</h1>
                         </div>
                       </div>
@@ -54,7 +54,7 @@
                           <img src="<?php echo base_url('images/iconoWater.svg') ?>" class="icono">
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand hc-contenedor row">
-                          <p id="display_tempamb" class="weather-temperature hc-valor">--</p>
+                          <p id="display_tempamb" class="weather-temperature hc-valor mr-3">--</p>
                           <h1 class="hc-unidades">%</h1>
                         </div>
                       </div>
@@ -76,7 +76,7 @@
                           <img src="<?php echo base_url('images/iconoNube.svg') ?>" class="icono">
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand hc-contenedor row">
-                          <p id="display_tempamb" class="weather-temperature hc-valor">--</p>
+                          <p id="display_tempamb" class="weather-temperature hc-valor mr-3">--</p>
                           <h1 class="hc-unidades">cm</h1>
                         </div>
                       </div>
