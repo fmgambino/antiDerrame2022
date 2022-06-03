@@ -100,8 +100,7 @@ var gTemp = 0;
       var splitted = message.toString().split(",");
 
       var co2 = splitted[0];
-      var tempamb = splitted[1];
-          gTemp = tempamb;
+      var tempamb = splitted[1];         
       var hum = splitted[2];
       var ph = splitted[3];
       var niv = splitted[4];
@@ -120,7 +119,8 @@ var gTemp = 0;
       $("#display_ph").html(ph);
       $("#display_cdtv").html(cdtv);
 
-
+      gTemp = tempamb;
+      console.log('valor de global de temperatura  =' + gTemp);
       if (niv == 1) {
         $("#display_niv").html("ALTO");
       } else {
