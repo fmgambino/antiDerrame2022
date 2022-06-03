@@ -12,7 +12,7 @@ let EspumaInicial = 0;
 
 console.log('valor de global de temperatura  =' + gTemp);
 
-let valorFinalProgreso = 25;
+let valorFinalProgreso = gTemp;
 let valorFinalNivel = 39;
 let valorFinalEspuma = 50;
 
