@@ -10,7 +10,7 @@ let Nivelinicial = 0;
 let EspumaInicial = 0;
 
 
-console.log('valor de global de temperatura  =' + gTemp);
+console.log('valor de global de temperatura  en sidebar =' + gTemp);
 
 let valorFinalProgreso = gTemp;
 let valorFinalNivel = 39;
