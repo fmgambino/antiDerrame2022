@@ -1,4 +1,4 @@
-let valTemperatura = document.querySelector(".weather-temperature");
+
 let progresBar = document.querySelector(".progresTemp");
 let valorContenedor = document.querySelector(".valorTemp");
 let progresNivel = document.querySelector(".progresNivel");
@@ -10,9 +10,9 @@ let valorProgreso = 0;
 let Nivelinicial = 0;
 let EspumaInicial = 0;
 
-var gTemp = 0;
 
-console.log(valTemperatura);
+
+console.log(gTemp);
 
 let valorFinalProgreso = 25;
 let valorFinalNivel = 39;
@@ -21,6 +21,8 @@ let valorFinalEspuma = 50;
 let velocidad = 0.1;
 
 let progreso = setInterval(() => {
+    valorFinalProgreso = gTemp;
+    console.log(gTemp);
     valorProgreso++;
     /*console.log('valor de progreso =' + valorProgreso);*/
     valorContenedor.textContent = valorProgreso + '°C';
