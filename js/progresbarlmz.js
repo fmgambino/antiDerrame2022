@@ -9,7 +9,7 @@ let valorProgreso = 0;
 let Nivelinicial = 0;
 let EspumaInicial = 0;
 
-let valorFinalProgreso = 89;
+let valorFinalProgreso = 25;
 let valorFinalNivel = 39;
 let valorFinalEspuma = 50;
 
