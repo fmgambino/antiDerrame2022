@@ -57,6 +57,8 @@
 </script>
 
 <script type="text/javascript">
+var gTemp = 0;
+
   const options = {
     connectTimeout: 1000,
     // Authentication
@@ -99,6 +101,7 @@
 
       var co2 = splitted[0];
       var tempamb = splitted[1];
+          gTemp = tempamb;
       var hum = splitted[2];
       var ph = splitted[3];
       var niv = splitted[4];

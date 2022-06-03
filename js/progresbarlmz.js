@@ -9,7 +9,7 @@ let valorProgreso = 0;
 let Nivelinicial = 0;
 let EspumaInicial = 0;
 
-let valorFinalProgreso = {{tempamb}};
+let valorFinalProgreso = gTemp;
 let valorFinalNivel = 39;
 let valorFinalEspuma = 50;
 
