@@ -98,8 +98,6 @@ const unsigned char PROGMEM logo_hydrocrop[] = {
 //*********** CONFIG **************
 //*********************************
 
-
-
 // ENTRADAS
 
 #define WIFI_PIN 23
@@ -167,6 +165,17 @@ Separador s;
 //***** DECLARACION FUNCIONES ********
 //************************************
 
+bool get_topic(int length);
+void callback(char *topic, byte *payload, unsigned int length);
+void reconnect();
+void ReStartESP();
+void send_mqtt_data();
+void send_to_database();
+void myOled();
+void oledWiFi();
+void oledWiFiConect();
+void push(String titulo, String mensaje);
+
 void Cap1();
 void Cap2();
 void Cap3();
@@ -184,14 +193,25 @@ void Rele2();
 void MosFet1();
 void MosFet2();
 
+
 //*************************************
 //********      GLOBALS         *******
 //*************************************
+bool topic_obteined = false;
+char device_topic_subscribe[40];
+char device_topic_publish[40];
+char msg[60];
+long milliseconds = 0;
 
 byte sw1 = 0;      // BOMBA DE AGUA - Variable Global de Inicializacion
 
 float temp;
 int nivCap;
+
+// VARIABLS ESTADOS EN PHP
+
+int eHO2 = 1;
+int nivOptico;
 
 void setup()
 {
@@ -222,6 +242,29 @@ void setup()
   digitalWrite(relay2, LOW);
   digitalWrite(mosfet1, LOW);
   digitalWrite(mosfet2, LOW);
+
+  Serial.begin(115200);
+
+  pinMode(WIFI_PIN, INPUT_PULLUP);
+
+  wifiManager.autoConnect("LIANDEV Admin");
+  oledWiFiConect();
+  Serial.println("Conexión a WiFi exitosa!");
+
+  // client2.setCACert(web_cert);
+
+  while (!topic_obteined)
+  {
+    topic_obteined = get_topic(expected_topic_length);
+    delay(1000);
+  }
+
+  // set mqtt cert
+  // client.setCACert(mqtt_cert);
+  mqttclient.setServer(mqtt_server, mqtt_port);
+  mqttclient.setCallback(callback);
+
+  oledWiFi();
 }
 
 void loop()
@@ -240,7 +283,213 @@ void loop()
 
   Amp1();
   Amp2();
- 
+
+  if (!client.connected())
+  {
+    reconnect();
+  }
+ // si el pulsador wifi esta en low, activamos el acces point de configuración
+  /* if (digitalRead(WIFI_PIN) == HIGH)
+  {
+    WiFiManager wifiManager;
+    wifiManager.startConfigPortal("HidroCrop WI-FI PIN");
+    Serial.println("Conectados a WiFi!!! :)");
+  }
+*/
+  // si estamos conectados a mqtt enviamos mensajes
+  if (millis() - milliseconds > 5000)
+  {
+    milliseconds = millis();
+
+    if (mqttclient.connected())
+    {
+      // set mqtt cert
+
+      String to_send = String('co2') + "," + String(temp) + "," + String("hum") + "," + String(nivCap) + "," + String(nivOptico) + "," + String(sw1) + "," + String("sw2") + "," + String("sw3") + "," + String("cdtv") + "," + String("eHO2") + "," + String("eCooler") + "," + String("eDifusor");
+      to_send.toCharArray(msg, 60);
+      mqttclient.publish(device_topic_publish, msg);
+
+      // Serial.print("ENVIO DE CADENA A PHP...");
+
+      delay(100);
+
+      // send_to_database();
+
+      /*
+        if (ph >=0 || ph <=20){
+          send_to_database();
+        } */
+    }
+  }
+
+  mqttclient.loop();
+
+}
+
+//************************************
+//*********** FUNCIONES **************
+//************************************
+
+void callback(char *topic, byte *payload, unsigned int length)
+{
+  String incoming = "";
+  Serial.print("Mensaje recibido desde tópico -> ");
+  Serial.print(topic);
+  Serial.println("");
+  for (int i = 0; i < length; i++)
+  {
+    incoming += (char)payload[i];
+  }
+  incoming.trim();
+  Serial.println("Mensaje -> " + incoming);
+
+  String str_topic = String(topic);
+  String command = s.separa(str_topic, '/', 3);
+  Serial.println(command);
+}
+
+void reconnect()
+{
+
+  while (!mqttclient.connected())
+  {
+    Serial.print("Intentando conexión MQTT SSL");
+    // we create client id
+    String clientId = "esp32_ia_";
+    clientId += String(random(0xffff), HEX);
+    // Trying SSL MQTT connection
+    if (mqttclient.connect(clientId.c_str(), mqtt_user, mqtt_pass))
+    {
+      Serial.println("Connected!");
+      // We subscribe to topic
+
+      mqttclient.subscribe(device_topic_subscribe);
+    }
+    else
+    {
+      Serial.print("falló :( con error -> ");
+      Serial.print(mqttclient.state());
+      Serial.println(" Intentamos de nuevo en 5 segundos");
+
+      delay(1000);
+      ReStartESP();
+    }
+  }
+}
+
+// función para obtener el tópico perteneciente a este dispositivo
+bool get_topic(int length)
+{
+
+  Serial.println("\nIniciando conexión segura para obtener tópico raíz...");
+
+  if (!client2.connect(server, 443))
+  {
+    Serial.println("Error... Falló conexión!");
+  }
+  else
+  {
+    Serial.println("Conectados a servidor para obtener tópico - ok");
+    // Make a HTTP request:
+    String data = "gdp=" + get_data_password + "&sn=" + serial_number + "\r\n";
+    client2.print(String("POST ") + "/app/getdata/gettopics" + " HTTP/1.1\r\n" +
+                  "Host: " + server + "\r\n" +
+                  "Content-Type: application/x-www-form-urlencoded" + "\r\n" +
+                  "Content-Length: " + String(data.length()) + "\r\n\r\n" +
+                  data +
+                  "Connection: close\r\n\r\n");
+
+    Serial.println("Solicitud enviada - ok");
+
+    while (client2.connected())
+    {
+      String line = client2.readStringUntil('\n');
+      if (line == "\r")
+      {
+        Serial.println("Headers recibidos - ok");
+        break;
+      }
+    }
+
+    String line;
+    while (client2.available())
+    {
+      line += client2.readStringUntil('\n');
+    }
+    Serial.println(line);
+    String temporal_topic = s.separa(line, '#', 1);
+    String temporal_user = s.separa(line, '#', 2);
+    String temporal_password = s.separa(line, '#', 3);
+
+    Serial.println("El tópico es: " + temporal_topic);
+    Serial.println("El user MQTT es: " + temporal_user);
+    Serial.println("La pass MQTT es: " + temporal_password);
+    Serial.println("La cuenta del tópico obtenido es: " + String(temporal_topic.length()));
+
+    if (temporal_topic.length() == length)
+    {
+      Serial.println("El largo del tópico es el esperado: " + String(temporal_topic.length()));
+
+      String temporal_topic_subscribe = temporal_topic + "/actions/#";
+      temporal_topic_subscribe.toCharArray(device_topic_subscribe, 40);
+      Serial.println(device_topic_subscribe);
+      String temporal_topic_publish = temporal_topic + "/data";
+      temporal_topic_publish.toCharArray(device_topic_publish, 40);
+      temporal_user.toCharArray(mqtt_user, 20);
+      temporal_password.toCharArray(mqtt_pass, 20);
+
+      client2.stop();
+      return true;
+    }
+    else
+    {
+      client2.stop();
+      return false;
+    }
+  }
+}
+
+void send_to_database()
+{
+
+  Serial.println("\nIniciando conexión segura para enviar a base de datos...");
+
+  if (!client2.connect(server, 443))
+  {
+    Serial.println("Falló conexión!");
+  }
+  else
+  {
+    Serial.println("Conectados a servidor para insertar en db - ok");
+    // Make a HTTP request:
+    String data = "idp=" + insert_password + "&sn=" + serial_number + "&co2=" + String("co2") + "&tempamb=" + String(temp) + "&hum=" + String(nivOptico) + "&ph=" + String("ph") + "\r\n";
+    client2.print(String("POST ") + "/app/insertdata/insert" + " HTTP/1.1\r\n" +
+                  "Host: " + server + "\r\n" +
+                  "Content-Type: application/x-www-form-urlencoded" + "\r\n" +
+                  "Content-Length: " + String(data.length()) + "\r\n\r\n" +
+                  data +
+                  "Connection: close\r\n\r\n");
+
+    Serial.println("Solicitud enviada - ok");
+
+    while (client2.connected())
+    {
+      String line = client2.readStringUntil('\n');
+      if (line == "\r")
+      {
+        Serial.println("Headers recibidos - ok");
+        break;
+      }
+    }
+
+    String line;
+    while (client2.available())
+    {
+      line += client2.readStringUntil('\n');
+    }
+    Serial.println(line);
+    client2.stop();
+  }
 }
 
 // SENSOR OPTICO 1 - NIVEL BAJO
@@ -372,7 +621,7 @@ void myOled()
   oled.display();
 }
 
-// OLED CONECTANDO AL FI WI
+// OLED CONECTANDO AL WI FI
 
 void oledWiFiConect()
 {
@@ -424,13 +673,10 @@ void ReStartESP()
 void fbomba()
 {
 
-  timer = ptime * 20.95 * 10 * 5;
-  contA = contA + 10;
-
   if (sw1 == 1 || contA >= timer)
   {
 
-    if (digitalRead(nivpin) == 1) // ESTA EN OPTIMO?
+    if (digitalRead(nivOptico) == 1) // ESTA EN OPTIMO?
     {
       digitalWrite(bomba, HIGH); // ACTIVA BOMBA
       sw1 = 1;
@@ -438,17 +684,11 @@ void fbomba()
       delay(250);
     }
   }
-  if (sw1 == 0 || digitalRead(nivpin) == 0)
+  if (sw1 == 0 || digitalRead(nivOptico) == 0)
   {
     digitalWrite(bomba, LOW);
     sw1 = 0;
     eHO2 = 0;
   }
 
-  if (contA >= timer)
-  {
-   // Serial.print("Contador :");
-    //Serial.print(contA);
-    contA = 0;
-  }
 }
