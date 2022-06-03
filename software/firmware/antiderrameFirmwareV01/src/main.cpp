@@ -139,14 +139,14 @@ int contA = 0; // Variables de inicializacion.
 //************************************
 // estos datos deben estar configurador también en las constantes de tu panel
 //  NO USES ESTOS DATOS PON LOS TUYOS!!!!
-const String serial_number = "797171";
+const String serial_number = "797170";
 const String insert_password = "285289";
 const String get_data_password = "420285";
 const char *server = "liandev.tk";
 
 // MQTT
 const char *mqtt_server = "broker.emqx.io";
-const int mqtt_port = 8084;
+const int mqtt_port = 8883;
 
 // no completar, el dispositivo se encargará de averiguar qué usuario y qué contraseña mqtt debe usar.
 char mqtt_user[20] = "";
@@ -233,6 +233,7 @@ void setup()
   pinMode(sCap1, INPUT);
   pinMode(sCap2, INPUT);
   pinMode(sCap3, INPUT);
+  pinMode(nivOptico,INPUT);
 
   pinMode(bomba, OUTPUT);
   pinMode(relay2, OUTPUT);
@@ -285,20 +286,18 @@ void loop()
   Amp1();
   Amp2();
 
+  fbomba();
+
   if (!client.connected())
   {
     reconnect();
   }
  // si el pulsador wifi esta en low, activamos el acces point de configuración
-  /* if (digitalRead(WIFI_PIN) == HIGH)
-  {
-    WiFiManager wifiManager;
-    wifiManager.startConfigPortal("HidroCrop WI-FI PIN");
-    Serial.println("Conectados a WiFi!!! :)");
-  }
-*/
+   if (digitalRead(WIFI_PIN) == HIGH)
+
+
   // si estamos conectados a mqtt enviamos mensajes
-  if (millis() - milliseconds > 5000)
+  if (millis() - milliseconds > 1000)
   {
     milliseconds = millis();
 
@@ -306,7 +305,7 @@ void loop()
     {
       // set mqtt cert
 
-      String to_send = String('co2') + "," + String(temp) + "," + String("hum") + "," + String(nivCap) + "," + String(nivOptico) + "," + String(sw1) + "," + String("sw2") + "," + String("sw3") + "," + String("cdtv") + "," + String("eHO2") + "," + String("eCooler") + "," + String("eDifusor");
+      String to_send = String("co2") + "," + String(temp) + "," + String("hum") + "," + String(nivCap) + "," + String(nivOptico) + "," + String(sw1) + "," + String("sw2") + "," + String("sw3") + "," + String("cdtv") + "," + String(eHO2) + "," + String("eCooler") + "," + String("eDifusor");
       to_send.toCharArray(msg, 60);
       mqttclient.publish(device_topic_publish, msg);
 
@@ -314,7 +313,7 @@ void loop()
 
       delay(100);
 
-      // send_to_database();
+       //send_to_database();
 
       /*
         if (ph >=0 || ph <=20){
@@ -347,6 +346,17 @@ void callback(char *topic, byte *payload, unsigned int length)
   String str_topic = String(topic);
   String command = s.separa(str_topic, '/', 3);
   Serial.println(command);
+
+  // LECTURA  BOMBA DE AGUA DESDE PHP
+
+  if (command == "sw1")
+  {
+    Serial.println("Sw1 pasa a estado " + incoming);
+    sw1 = incoming.toInt();
+    Serial.print("Estado Bomba: ");
+    Serial.println(sw1);
+    fbomba();
+  }  
 }
 
 void reconnect()
@@ -513,8 +523,28 @@ void Optico()
 {
   Serial.print("Valor Sensor Optico     : ");
   Serial.println(analogRead(sOptico));
-  float volts = analogRead(sOptico)*(3/4095);  
-  Serial.println(analogRead(volts));
+
+  nivOptico = (analogRead(sOptico));
+
+  if(nivOptico < 500)
+  {
+    digitalWrite(bomba, HIGH); // ACTIVA BOMBA
+    sw1 = 1;
+    eHO2 = 1;
+    Serial.print("BOMBA ACTIVS");
+    delay(250);
+  }
+
+  if (nivOptico > 500 || sw1 ==0 )
+  {
+    digitalWrite(bomba, LOW); // APAGA BOMBA
+    sw1 = 0;
+    eHO2 = 0;
+    Serial.print("BOMBA APAGADA");
+    delay(250);    
+  }
+  
+  
 }
 
 void Temp()
@@ -549,7 +579,7 @@ void Amp2()
 
 void myOled()
 {
-  int temp;
+  
   oled.clearDisplay();
   oled.setTextSize(1);                             // Normal 1:1 pixel scale
   oled.setTextColor(SSD1306_BLACK, SSD1306_WHITE); // Draw white text
@@ -674,22 +704,21 @@ void ReStartESP()
 void fbomba()
 {
 
-  if (sw1 == 1 || contA >= timer)
+  if (sw1 == 1 )
   {
-
-    if (digitalRead(nivOptico) == 1) // ESTA EN OPTIMO?
-    {
       digitalWrite(bomba, HIGH); // ACTIVA BOMBA
       sw1 = 1;
       eHO2 = 1;
+      Serial.print("BOMBA ACTIVS");
       delay(250);
-    }
+
   }
-  if (sw1 == 0 || digitalRead(nivOptico) == 0)
+  if (sw1 == 0)
   {
     digitalWrite(bomba, LOW);
     sw1 = 0;
     eHO2 = 0;
+    Serial.print("BOMBA APADAITA");
   }
 
 }
