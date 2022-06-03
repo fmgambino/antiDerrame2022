@@ -18,7 +18,7 @@
             </select>
 
             <div class="avatar-dropdown " id="icon" style="padding-right: 0px;padding-left: 0px;">
-                <span class=" hc-color-text-negro"><?php echo $_SESSION['user_name']; ?></span>
+                <span class=" hc-color-text-negro pr-0"><?php echo $_SESSION['user_name']; ?></span>
                 <img style="padding-right: 0px;padding-left: 0px;" class="" src="<?php echo $_SESSION['user_image']; ?>">
             </div>
 
