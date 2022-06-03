@@ -101,7 +101,7 @@ var gTemp = 0;
 
       var co2 = splitted[0];
       var tempamb = splitted[1];
-          gTemp = tempamb;
+          gTemp = 0;
       var hum = splitted[2];
       var ph = splitted[3];
       var niv = splitted[4];
