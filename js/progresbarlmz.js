@@ -14,7 +14,7 @@ var gTemp = 0;
 
 console.log(valTemperatura);
 
-let valorFinalProgreso = gTemp;
+let valorFinalProgreso = 25;
 let valorFinalNivel = 39;
 let valorFinalEspuma = 50;
 
