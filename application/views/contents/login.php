@@ -58,7 +58,7 @@
           <div class="  ">
             <form class="" action="<?php echo base_url('login/dologin') ?>" method="post">
               <div class="col-12  mt-4">
-                <span class=""> Inicie sesión con su cuenta IoT</span>
+                <span class=""> hola Inicie sesión con su cuenta IoT</span>
               </div>
               <div class="col-12  mt-4">
                 <div class="mb-3">
