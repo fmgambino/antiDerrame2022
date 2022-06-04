@@ -21,8 +21,8 @@ let progreso = setInterval(() => {
 
     //valorFinalProgreso = gTemp;
     //console.log(gTemp);
-    let tempGlobal = localStorage.getItem('GlobalTemp');
-    console.log('Variable global proveniente de storage = ' + tempGlobal);
+    //let tempGlobal = localStorage.getItem('GlobalTemp');
+    //console.log('Variable global proveniente de storage = ' + tempGlobal);
 
 
 
