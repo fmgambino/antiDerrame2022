@@ -61,12 +61,12 @@ class Main extends CI_Controller {
 
 		//ya tenemos todo lo necesario para cargar las partes del panel, mostrarla y pasarle "DATA" a cada parte que necesite de estos "DATA"
 		$this->load->view('head');
-		$this->load->view('scripts');
+		
 		$this->load->view('open');
 		$this->load->view('header',$data); //el header necesita que le pase la lista de dispos para el selector
 		$this->load->view('sidebar');
     	$this->load->view('contents/main',$data); //el main entre otra cosas necesitará los datos para graficar históricos.
-		
+		$this->load->view('scripts');
 		$this->load->view('close');
   }
 }
