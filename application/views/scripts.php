@@ -119,7 +119,7 @@
       gTemp = tempamb;
 
       console.log('valor de global de temperatura  en Script=' + gTemp);
-      //localStorage.setItem('GlobalTemp', tempamb) 
+      localStorage.setItem('GlobalTemp', tempamb) 
 
 
 
