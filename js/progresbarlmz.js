@@ -14,7 +14,7 @@ let valorFinalProgreso = 25;
 let valorFinalNivel = 39;
 let valorFinalEspuma = 50;
 
-let velocidad = 0.1;
+let velocidad = 500;
 
 
 let progreso = setInterval(() => { 
