@@ -116,10 +116,8 @@
       $("#display_ph").html(ph);
       $("#display_cdtv").html(cdtv);
 
-      gTemp = tempamb;
+      gTemp = tempamb;      
 
-      console.log('valor de global de temperatura  en Script=' + gTemp);
-      
 
       if (niv == 1) {
         $("#display_niv").html("ALTO");
