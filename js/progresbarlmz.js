@@ -20,7 +20,7 @@ let velocidad = 0.1;
 let progreso = setInterval(() => {
 
     //valorFinalProgreso = gTemp;
-    console.log(gTemp);
+    //console.log(gTemp);
     let tempGlobal = localStorage.getItem('GlobalTemp');
     console.log('Variable global proveniente de storage = ' + tempGlobal);
 
