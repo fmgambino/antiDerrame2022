@@ -34,7 +34,7 @@ let progreso = setInterval(() => {
     progresBar.style.background = 'conic-gradient( #ff8080 ' + desplazamiento + 'deg , #2d5e8f ' + desplazamiento + 'deg)';
     /*console.log(progresBar.style.background);*/
     if (valorProgreso == valorFinalProgreso) {
-        clearInterval(progreso);
+        
     }
 }, velocidad);
 
