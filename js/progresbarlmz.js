@@ -17,27 +17,17 @@ let valorFinalEspuma = 50;
 let velocidad = 0.1;
 
 
-let progreso = setInterval(() => {
+let progreso = setInterval(() => { 
 
-    //valorFinalProgreso = gTemp;
-    console.log('valor de temperatura en mijs : ' + gTemp);
-    //let tempGlobal = localStorage.getItem('GlobalTemp');
-    //console.log('Variable global proveniente de storage = ' + tempGlobal);
     if(valorProgreso < gTemp){
         valorProgreso++;        
     }
     if(valorProgreso > gTemp){
         valorProgreso--;        
-    }    
-    /*console.log('valor de progreso =' + valorProgreso);*/
+    }        
     valorContenedor.textContent = valorProgreso + '°C';
-    let desplazamiento = valorProgreso * 3.6;
-    /*console.log(desplazamiento);*/
-    progresBar.style.background = 'conic-gradient( #ff8080 ' + desplazamiento + 'deg , #2d5e8f ' + desplazamiento + 'deg)';
-    /*console.log(progresBar.style.background);*/
-    if (valorProgreso == valorFinalProgreso) {
-        
-    }
+    let desplazamiento = valorProgreso * 3.6;    
+    progresBar.style.background = 'conic-gradient( #ff8080 ' + desplazamiento + 'deg , #2d5e8f ' + desplazamiento + 'deg)';    
     
 }, velocidad);
 
