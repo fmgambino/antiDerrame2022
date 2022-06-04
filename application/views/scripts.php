@@ -119,10 +119,7 @@
       gTemp = tempamb;
 
       console.log('valor de global de temperatura  en Script=' + gTemp);
-      localStorage.setItem('GlobalTemp', tempamb) ;
-
-
-
+      
 
       if (niv == 1) {
         $("#display_niv").html("ALTO");
