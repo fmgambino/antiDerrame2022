@@ -105,13 +105,10 @@
       var ph = splitted[3];
       var niv = splitted[4];
 
-
       var switch1 = splitted[5];
       var switch2 = splitted[6];
       var switch3 = splitted[7];
       var cdtv = splitted[8];
-
-
 
       $("#display_co2").html(co2);
       $("#display_tempamb").html(tempamb);      
@@ -121,7 +118,10 @@
 
       gTemp = tempamb;
       console.log('valor de global de temperatura  en Script=' + gTemp);
+      localStorage.setItem('GlobalTemp', tempamb) 
+
       
+
 
       if (niv == 1) {
         $("#display_niv").html("ALTO");

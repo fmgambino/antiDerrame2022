@@ -10,19 +10,22 @@ let valorProgreso = 0;
 let Nivelinicial = 0;
 let EspumaInicial = 0;
 
-
-
-
-
 let valorFinalProgreso = 25;
 let valorFinalNivel = 39;
 let valorFinalEspuma = 50;
 
 let velocidad = 0.1;
 
+
 let progreso = setInterval(() => {
+    
     valorFinalProgreso = gTemp;
     console.log(gTemp);
+    let tempGlobal = localStorage.getItem('GlobalTemp');
+    console.log('Variable global proveniente de storage = ' + tempGlobal);
+
+
+
     valorProgreso++;
     /*console.log('valor de progreso =' + valorProgreso);*/
     valorContenedor.textContent = valorProgreso + '°C';
