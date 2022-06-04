@@ -23,10 +23,12 @@ let progreso = setInterval(() => {
     console.log('valor de temperatura en mijs : ' + gTemp);
     //let tempGlobal = localStorage.getItem('GlobalTemp');
     //console.log('Variable global proveniente de storage = ' + tempGlobal);
-
-
-
-    valorProgreso++;
+    if(valorProgreso < gTemp){
+        valorProgreso++;        
+    }
+    if(valorProgreso > gTemp){
+        valorProgreso--;        
+    }    
     /*console.log('valor de progreso =' + valorProgreso);*/
     valorContenedor.textContent = valorProgreso + '°C';
     let desplazamiento = valorProgreso * 3.6;
@@ -36,6 +38,7 @@ let progreso = setInterval(() => {
     if (valorProgreso == valorFinalProgreso) {
         
     }
+    
 }, velocidad);
 
 let Nivel = setInterval(() => {
