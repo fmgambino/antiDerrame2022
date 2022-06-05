@@ -132,7 +132,8 @@
 </main>
 
 <script src="<?php echo base_url('js/progresbarlmz.js') ?>"></script>
-<script type="text/javascript">
+
+<script type="text/javascript">/*
   var css_file = document.createElement("link");
   var widgetUrl = location.href;
   css_file.setAttribute("rel", "stylesheet");
@@ -161,6 +162,7 @@
   weatherBookedScript.setAttribute("type", "text/javascript");
   weatherBookedScript.src = widgetSrc;
   document.body.appendChild(weatherBookedScript)
+  */
 </script><!-- weather widget end -->
 <script>
   var ctx = document.getElementById('my_chart').getContext('2d');

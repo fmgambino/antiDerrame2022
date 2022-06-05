@@ -66,7 +66,7 @@
                 <span class="login-name ">Registro de Usuario</span>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <div class="">
                     <input class="mdl-textfield__input mt-4" placeholder="Usuario" type="text" id="name" name="name" value="<?php echo $name ?>">
                   </div>
@@ -74,7 +74,7 @@
                     <input class="mdl-textfield__input mt-4" placeholder="Email" type="text" id="e-mail" name="email" value="<?php echo $email ?>">
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <div class="">
                     <input class="mdl-textfield__input mt-4" placeholder="Contraseña" type="password" id="password" name="password">
                   </div>

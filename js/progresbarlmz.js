@@ -16,6 +16,7 @@ let valorFinalEspuma = 50;
 
 let velocidad = 500;
 
+let gTemp = 0;
 
 let progreso = setInterval(() => { 
 
