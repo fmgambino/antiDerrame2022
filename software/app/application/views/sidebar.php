@@ -23,9 +23,9 @@
 
           <div class="mdl-layout-spacer"></div>
           <hr>
-          <a class="mdl-navigation__link hc-text-white hc-grow" href="https://liandev.net/">
+          <a class="mdl-navigation__link hc-text-white hc-grow" href="https://liandev.tk/">
             <i class="material-icons hc-text-white" role="presentation">link</i>
-            liandev.net
+            liandev.tk
           </a>
         </nav>
       </div>

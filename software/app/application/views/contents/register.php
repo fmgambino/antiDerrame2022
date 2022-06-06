@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sistema IoT HYDROCROP</title>
+  <title>Sistema IoT LIANDEV</title>
 
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -51,7 +51,7 @@
         </div>
     <main class="">
       <div class="col-12">
-        <a href="https://liandev.net">
+        <a href="https://liandev.tk">
           <img src="<?php echo base_url('images/liandev1.png') ?>" class="logo1" />
         </a>
       </div>
@@ -66,7 +66,7 @@
                 <span class="login-name ">Registro de Usuario</span>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <div class="">
                     <input class="mdl-textfield__input mt-4" placeholder="Usuario" type="text" id="name" name="name" value="<?php echo $name ?>">
                   </div>
@@ -74,7 +74,7 @@
                     <input class="mdl-textfield__input mt-4" placeholder="Email" type="text" id="e-mail" name="email" value="<?php echo $email ?>">
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                   <div class="">
                     <input class="mdl-textfield__input mt-4" placeholder="Contraseña" type="password" id="password" name="password">
                   </div>

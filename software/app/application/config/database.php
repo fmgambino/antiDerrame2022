@@ -77,9 +77,9 @@ $db['default']['options'] = array(PDO::ATTR_TIMEOUT => 5000);
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'antiderrame',
+	'username' => 'u977340838_liandev',
+	'password' => 'Jamboree0381$$',
+	'database' => 'u977340838_antiderrame',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

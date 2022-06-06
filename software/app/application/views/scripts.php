@@ -57,6 +57,9 @@
 </script>
 
 <script type="text/javascript">
+let estadoConexion = 0;
+let mensajeOptico = 'Alto' ; 
+
   const options = {
     connectTimeout: 1000,
     // Authentication
@@ -80,12 +83,14 @@
     }, (error) => {
       if (error) {
         console.log("Error al Suscribir");
+        estadoConexion = 0;
       } else {
         console.log("Suscrito al Broker con Exito!");
         console.log("Proyecto Final de Carrera");
         console.log("San Miguel de Tucumán - Tucumán - Argentina");
         console.log("UTN - FRT");
-        console.log("2021");
+        console.log("2022");
+        estadoConexion = 1;
       }
 
     })
@@ -97,27 +102,34 @@
     if (topic == device_topic + "data") {
       var splitted = message.toString().split(",");
 
-      var co2 = splitted[0];
-      var tempamb = splitted[1];
-      var hum = splitted[2];
-      var ph = splitted[3];
-      var niv = splitted[4];
-
+      var melasa = splitted[0];
+      var temp = splitted[1];         
+      var optico = splitted[2];
+      var sw1 = splitted[3];
+      var eH2O = splitted[4];
 
       var switch1 = splitted[5];
       var switch2 = splitted[6];
       var switch3 = splitted[7];
       var cdtv = splitted[8];
 
+      $("#display_melasa").html(melasa);
+      $("#display_tempamb").html(temp); 
+      
+      if(optico > 1000){
+        mensajeOptico = 'Bajo';
+      }
+      else{
+        mensajeOptico = 'Alto';
+      }
 
+      $("#display_optico").html(mensajeOptico);      
 
-      $("#display_co2").html(co2);
-      $("#display_tempamb").html(tempamb);
-      $("#display_hum").html(hum);
-      $("#display_ph").html(ph);
-      $("#display_cdtv").html(cdtv);
+      gTemp = temp;
+      gNivel = melasa;
+      gEspuma = optico;      
 
-
+/*
       if (niv == 1) {
         $("#display_niv").html("ALTO");
       } else {
@@ -129,7 +141,8 @@
       } else {
         $("#display_sw1").prop('checked', "");
       }
-
+      */
+/*
       if (switch2 == "1") {
         $("#display_sw2").prop('checked', true);
       } else {
@@ -141,7 +154,7 @@
       } else {
         $("#display_sw3").prop('checked', "");
       }
-
+*/
 
     }
 
@@ -163,7 +176,7 @@
       client.publish(device_topic + 'actions/sw1', "0");
     }
   }
-
+/*
   function sw2_change() {
     if ($('#display_sw2').is(":checked")) {
       client.publish(device_topic + 'actions/sw2', "1");
@@ -185,33 +198,9 @@
     value = $('#display_slider').val();
     client.publish(device_topic + 'actions/slider', value);
   }
-
+*/
   //SE CREA FUNCION PARA ENVIO DE DATOS DEL FORMULARIO PARAMETROS
-<?php 
-  $ptempmin = $_POST['formtempmin'];
-  $ptempmax = $_POST['formtempmax'];
-  $phummin =  $_POST['formhummin'];
-  $phummax =  $_POST['formhummax'];
-  $pco2min =  $_POST['formco2min'];
-  $pco2max =  $_POST['formco2max'];
-  $ptime = $_POST['formtime'];
 
-?> 
-
- // pvalue = $('ptemp', 'phum', 'pco2', 'ptime').val();
-//  client.publish(device_topic + 'actions/pdatos', pvalue);
-
-  /*
-  function parametros(){
-    if ($('#boton').is(":oneclick"))
-    {
-      pvalue = $('ptemp','phum','pco2', 'ptime').val();
-      client.publish(device_topic + 'actions/pdatos',pvalue);
-    }else{
-      client.publish(device_topic + 'actions/pdatos',"0");
-    }
-  }
-  */
 </script>
 <!-- endinject -->
 

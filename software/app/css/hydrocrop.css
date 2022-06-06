@@ -23,6 +23,11 @@ main{
 .hc-sidebar {
     background: var(--color1) !important;    
 }
+
+.avatar-dropdown{    
+    margin-right: 5px !important;
+    margin-left: 5px !important;
+}
 .logo{
     width: 80%;
     height: auto;
@@ -308,7 +313,7 @@ option{
 }
 /*------login-----*/
 .logo1{
-    width: 300px;
+    max-width: 300px;
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -453,7 +458,7 @@ td{
     background: white;
     border-radius: 2px;
     padding: 30px;
-    width: 600px;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;

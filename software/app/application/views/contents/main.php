@@ -32,7 +32,7 @@
                           <img src="<?php echo base_url('images/iconoTemp.svg') ?>" class="icono">
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand hc-contenedor row">
-                          <p id="display_tempamb" class="weather-temperature hc-valor">--</p>
+                          <p id="display_tempamb" class="weather-temperature hc-valor mr-3">--</p>
                           <h1 class="hc-unidades">°C</h1>
                         </div>
                       </div>
@@ -44,7 +44,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- HUM-->
+                <!--Melasa-->
                 <div class="col-12 ">
                   <div class="  weather">
                     <div class=" mdl-card--expand color-azul-1 form-inline">
@@ -54,7 +54,7 @@
                           <img src="<?php echo base_url('images/iconoWater.svg') ?>" class="icono">
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand hc-contenedor row">
-                          <p id="display_tempamb" class="weather-temperature hc-valor">--</p>
+                          <p id="display_melasa" class="weather-temperature hc-valor mr-3">--</p>
                           <h1 class="hc-unidades">%</h1>
                         </div>
                       </div>
@@ -66,7 +66,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- H2O -->
+                <!-- Espuma -->
                 <div class="col-12 ">
                   <div class="  weather">
                     <div class=" mdl-card--expand color-azul-1 form-inline">
@@ -76,14 +76,11 @@
                           <img src="<?php echo base_url('images/iconoNube.svg') ?>" class="icono">
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand hc-contenedor row">
-                          <p id="display_tempamb" class="weather-temperature hc-valor">--</p>
-                          <h1 class="hc-unidades">cm</h1>
+                          <p id="display_optico" class="weather-temperature hc-valor mr-3">--</p>                          
                         </div>
                       </div>
                       <div class="col-6 pt-3 pb-3 pl-0 pr-0">
-                        <div class="progres-circular progresEspuma">
-                          <div class="progres-valor valorEspuma">--</div>
-                        </div>
+                        <img src="<?php echo base_url('images/iconlampWhite.png') ?>" class="hc-icono-cancel" id="icono2" alt="">
                       </div>
                     </div>
                   </div>
@@ -101,7 +98,7 @@
         <div class="">
           <div class=" mdl-shadow--2dp line-chart">
             <div class="mdl-card__title">
-              <h2 class="mdl-card__title-text hc-color-text-blanco">Nivel CO2</h2>
+              <h2 class="mdl-card__title-text hc-color-text-blanco">Nivel Melasa</h2>
             </div>
             <div class="mdl-card__supporting-text">
               <canvas id="my_chart" width="auto" height="300"></canvas>
@@ -115,7 +112,7 @@
         <div class="">
           <div class=" mdl-shadow--2dp line-chart">
             <div class="mdl-card__title">
-              <h2 class="mdl-card__title-text hc-color-text-blanco">Tem. Ambiente</h2>
+              <h2 class="mdl-card__title-text hc-color-text-blanco">Temp. Melasa</h2>
             </div>
             <div class="mdl-card__supporting-text">
               <canvas id="my_chart2" width="auto" height="300"></canvas>
@@ -130,8 +127,10 @@
   </div>
   </div>
 </main>
+
 <script src="<?php echo base_url('js/progresbarlmz.js') ?>"></script>
-<script type="text/javascript">
+
+<script type="text/javascript">/*
   var css_file = document.createElement("link");
   var widgetUrl = location.href;
   css_file.setAttribute("rel", "stylesheet");
@@ -160,6 +159,7 @@
   weatherBookedScript.setAttribute("type", "text/javascript");
   weatherBookedScript.src = widgetSrc;
   document.body.appendChild(weatherBookedScript)
+  */
 </script><!-- weather widget end -->
 <script>
   var ctx = document.getElementById('my_chart').getContext('2d');
@@ -287,8 +287,7 @@
       } else {
         console.log("Suscrito al Broker con Exito!");
         console.log("Proyecto de Inversión");
-        console.log("San Miguel de Tucumán - Tucumán - Argentina");
-        console.log("by ELECTRÓNICA GAMBINO");
+        console.log("San Miguel de Tucumán - Tucumán - Argentina");        
         console.log("2022");
       }
 
@@ -305,7 +304,7 @@
 
   client.on('message', (topic, message) => {
     console.log('Msg desde el topico: ', topic, ' ----> ', message.toString());
-
+/*
     if (topic == device_topic + "data") {
       var splitted = message.toString().split(",");
 
@@ -436,6 +435,7 @@
       }
 
     }
+    */
   })
 
   client.on('reconnect', (error) => {
@@ -480,27 +480,6 @@
       imagen2.classList.add("hc-icono-cancel");
     }
   }
-
-  function sw3_change() {
-    var imagen3 = document.getElementById('icono3');
-    if ($('#display_sw3').is(":checked")) {
-      client.publish(device_topic + 'actions/sw3', "1");
-      imagen3.src = img2;
-      imagen3.classList.remove("hc-icono-cancel");
-      imagen3.classList.add("hc-icono-check");
-    } else {
-      client.publish(device_topic + 'actions/sw3', "0");
-      imagen3.src = img1;
-      imagen3.classList.remove("hc-icono-check");
-      imagen3.classList.add("hc-icono-cancel");
-    }
-  }
-
-  function slider_change() {
-    value = $('#display_slider').val();
-    client.publish(device_topic + 'actions/slider', value);
-  }
-
 
   // FUNCIONES CIRCULOS DE ESTADOS
 

@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sistema IoT HYDROCROP</title>
+  <title>Sistema IoT LIANDEV</title>
 
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -45,11 +45,11 @@
 <body class="color-fondo">
 
   <div class="">
-    <center><span class=""> by Electrónica Gambino </span></center>
+    
 
     <main class=" ">
       <div class="col-12">
-        <a href="https://liandev.net">
+        <a href="https://liandev.tk">
           <img src="<?php echo base_url('images/liandev1.png') ?>" class="logo1" />
         </a>
       </div>
@@ -58,7 +58,7 @@
           <div class="  ">
             <form class="" action="<?php echo base_url('login/dologin') ?>" method="post">
               <div class="col-12  mt-4">
-                <span class=""> Inicie sesión con su cuenta IoT</span>
+                <span class="">Inicie sesión con su cuenta IoT</span>
               </div>
               <div class="col-12  mt-4">
                 <div class="mb-3">

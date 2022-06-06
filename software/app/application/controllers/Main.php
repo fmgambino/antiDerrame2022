@@ -65,8 +65,7 @@ class Main extends CI_Controller {
 		$this->load->view('open');
 		$this->load->view('header',$data); //el header necesita que le pase la lista de dispos para el selector
 		$this->load->view('sidebar');
-    	$this->load->view('contents/main',$data); //el main entre otra cosas necesitará los datos para graficar históricos.
-		
+    	$this->load->view('contents/main',$data); //el main entre otra cosas necesitará los datos para graficar históricos.		
 		$this->load->view('close');
   }
 }
