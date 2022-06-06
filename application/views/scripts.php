@@ -117,10 +117,10 @@ let mensajeOptico = 'Alto' ;
       $("#display_tempamb").html(temp); 
       
       if(optico > 1000){
-        mensajeOptico = 'Alto';
+        mensajeOptico = 'Bajo';
       }
       else{
-        mensajeOptico = 'Bajo';
+        mensajeOptico = 'Alto';
       }
 
       $("#display_optico").html(mensajeOptico);      

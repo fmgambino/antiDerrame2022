@@ -76,8 +76,7 @@
                           <img src="<?php echo base_url('images/iconoNube.svg') ?>" class="icono">
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand hc-contenedor row">
-                          <p id="display_optico" class="weather-temperature hc-valor mr-3">--</p>
-                          <h1 class="hc-unidades">cm</h1>
+                          <p id="display_optico" class="weather-temperature hc-valor mr-3">--</p>                          
                         </div>
                       </div>
                       <div class="col-6 pt-3 pb-3 pl-0 pr-0">
@@ -115,7 +114,7 @@
         <div class="">
           <div class=" mdl-shadow--2dp line-chart">
             <div class="mdl-card__title">
-              <h2 class="mdl-card__title-text hc-color-text-blanco">Tem. Ambiente</h2>
+              <h2 class="mdl-card__title-text hc-color-text-blanco">Temp. Melasa</h2>
             </div>
             <div class="mdl-card__supporting-text">
               <canvas id="my_chart2" width="auto" height="300"></canvas>
