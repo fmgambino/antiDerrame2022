@@ -35,6 +35,7 @@ let progreso = setInterval(() => {
 }, velocidad);
 
 let Nivel = setInterval(() => {
+    console.log('valor de melasa =' + gmelasa);
     Nivelinicial++;
     /*console.log('valor de progreso =' + valorProgreso);*/
     valorNivel.textContent = Nivelinicial + '%';

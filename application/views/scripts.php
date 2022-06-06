@@ -99,7 +99,7 @@
     if (topic == device_topic + "data") {
       var splitted = message.toString().split(",");
 
-      var co2 = splitted[0];
+      var melasa = splitted[0];
       var temp = splitted[1];         
       var hum = splitted[2];
       var ph = splitted[3];
@@ -110,14 +110,14 @@
       var switch3 = splitted[7];
       var cdtv = splitted[8];
 
-      $("#display_co2").html(co2);
+      $("#display_melasa").html(melasa);
       $("#display_tempamb").html(temp);      
       $("#display_hum").html(hum);
       $("#display_ph").html(ph);
       $("#display_cdtv").html(cdtv);
 
       gTemp = temp;
-      gnivel = ;
+      gnivel = melasa;
       gmelasa = ;      
 
 

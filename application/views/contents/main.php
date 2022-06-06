@@ -54,7 +54,7 @@
                           <img src="<?php echo base_url('images/iconoWater.svg') ?>" class="icono">
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand hc-contenedor row">
-                          <p id="display_tempamb" class="weather-temperature hc-valor mr-3">--</p>
+                          <p id="display_melasa" class="weather-temperature hc-valor mr-3">--</p>
                           <h1 class="hc-unidades">%</h1>
                         </div>
                       </div>
@@ -101,7 +101,7 @@
         <div class="">
           <div class=" mdl-shadow--2dp line-chart">
             <div class="mdl-card__title">
-              <h2 class="mdl-card__title-text hc-color-text-blanco">Nivel CO2</h2>
+              <h2 class="mdl-card__title-text hc-color-text-blanco">Nivel Melasa</h2>
             </div>
             <div class="mdl-card__supporting-text">
               <canvas id="my_chart" width="auto" height="300"></canvas>
