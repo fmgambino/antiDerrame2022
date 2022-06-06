@@ -119,8 +119,8 @@ let estadoConexion = 0;
       $("#display_cdtv").html(cdtv);
 
       gTemp = temp;
-      gnivel = melasa;
-      gmelasa = ;      
+      gNivel = melasa;
+      gmelasa = 0;      
 
 
       if (niv == 1) {
