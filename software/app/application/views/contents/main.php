@@ -80,7 +80,7 @@
                         </div>
                       </div>
                       <div class="col-6 pt-3 pb-3 pl-0 pr-0">
-                        <img src="<?php echo base_url('images/iconLampWhite.png') ?>" class="" id="icono2" alt="">
+                        <img src="<?php echo base_url('images/iconLampWhite.png') ?>" class="" id="icono2" alt="Lamp">
                       </div>c
                     </div>
                   </div>
