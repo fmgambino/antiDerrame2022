@@ -57,7 +57,7 @@
 </script>
 
 <script type="text/javascript">
-
+let estadoConexion = 0;
 
   const options = {
     connectTimeout: 1000,
@@ -82,12 +82,14 @@
     }, (error) => {
       if (error) {
         console.log("Error al Suscribir");
+        estadoConexion = 0;
       } else {
         console.log("Suscrito al Broker con Exito!");
         console.log("Proyecto Final de Carrera");
         console.log("San Miguel de Tucumán - Tucumán - Argentina");
         console.log("UTN - FRT");
         console.log("2022");
+        estadoConexion = 1;
       }
 
     })

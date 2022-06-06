@@ -43,9 +43,7 @@ let Nivel = setInterval(() => {
     /*console.log(desplazamiento);*/
     progresNivel.style.background = 'conic-gradient( #a0e6de ' + desplazamientoNivel + 'deg , #2d5e8f ' + desplazamientoNivel + 'deg)';
     /*console.log(progresBar.style.background);*/
-    if (eNivelinicial == valorFinalNivl) {
-        clearInterval(Nivel);
-    }
+    
 }, velocidad);
 
 let Espuma = setInterval(() => {
