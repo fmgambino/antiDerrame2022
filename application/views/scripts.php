@@ -103,9 +103,9 @@ let estadoConexion = 0;
 
       var melasa = splitted[0];
       var temp = splitted[1];         
-      var hum = splitted[2];
-      var ph = splitted[3];
-      var niv = splitted[4];
+      var optico = splitted[2];
+      var sw1 = splitted[3];
+      var eH2O = splitted[4];
 
       var switch1 = splitted[5];
       var switch2 = splitted[6];
@@ -114,13 +114,11 @@ let estadoConexion = 0;
 
       $("#display_melasa").html(melasa);
       $("#display_tempamb").html(temp);      
-      $("#display_hum").html(hum);
-      $("#display_ph").html(ph);
-      $("#display_cdtv").html(cdtv);
+      $("#display_optico").html(optico);      
 
       gTemp = temp;
       gNivel = melasa;
-      gmelasa = 0;      
+      gEspuma = optico;      
 
 
       if (niv == 1) {

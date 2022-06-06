@@ -18,7 +18,7 @@ let velocidad = 50;
 
 let gTemp = 0;
 let gNivel = 0;
-//let gEspuma = 0;
+let gEspuma = 0;
 
 let progreso = setInterval(() => { 
 
@@ -47,14 +47,14 @@ let Nivel = setInterval(() => {
 }, velocidad);
 
 let Espuma = setInterval(() => {
+    console.log('valor de Espuma =' + gEspuma);
+    /*
     EspumaInicial++;
-    /*console.log('valor de progreso =' + valorProgreso);*/
+   
     valorEspuma.textContent = EspumaInicial + 'cm';
     let desplazamientoEspuma = EspumaInicial * 3.6;
-    /*console.log(desplazamiento);*/
+   
     progresEspuma.style.background = 'conic-gradient( #ffbd59 ' + desplazamientoEspuma + 'deg , #2d5e8f ' + desplazamientoEspuma + 'deg)';
-    /*console.log(progresBar.style.background);*/
-    if (EspumaInicial == valorFinalEspuma) {
-        clearInterval(Espuma);
-    }
+   */
+    
 }, velocidad);
