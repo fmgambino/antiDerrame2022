@@ -49,6 +49,7 @@ let Nivel = setInterval(() => {
 }, velocidad);
 
 let Espuma = setInterval(() => {
+    var imagen2 = document.getElementById('icono2');
     console.log('valor de Espuma =' + gEspuma);
     if (gEspuma > 1000) {
         

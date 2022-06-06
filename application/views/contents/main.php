@@ -44,7 +44,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- HUM-->
+                <!--Melasa-->
                 <div class="col-12 ">
                   <div class="  weather">
                     <div class=" mdl-card--expand color-azul-1 form-inline">
@@ -66,7 +66,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- H2O -->
+                <!-- Espuma -->
                 <div class="col-12 ">
                   <div class="  weather">
                     <div class=" mdl-card--expand color-azul-1 form-inline">
@@ -80,9 +80,7 @@
                         </div>
                       </div>
                       <div class="col-6 pt-3 pb-3 pl-0 pr-0">
-                        <div class="progres-circular progresEspuma">
-                          <div class="progres-valor valorEspuma">--</div>
-                        </div>
+                        <img src="<?php echo base_url('images/.png') ?>" class="hc-icono-cancel" id="icono2" alt="">
                       </div>
                     </div>
                   </div>
@@ -482,27 +480,6 @@
       imagen2.classList.add("hc-icono-cancel");
     }
   }
-
-  function sw3_change() {
-    var imagen3 = document.getElementById('icono3');
-    if ($('#display_sw3').is(":checked")) {
-      client.publish(device_topic + 'actions/sw3', "1");
-      imagen3.src = img2;
-      imagen3.classList.remove("hc-icono-cancel");
-      imagen3.classList.add("hc-icono-check");
-    } else {
-      client.publish(device_topic + 'actions/sw3', "0");
-      imagen3.src = img1;
-      imagen3.classList.remove("hc-icono-check");
-      imagen3.classList.add("hc-icono-cancel");
-    }
-  }
-
-  function slider_change() {
-    value = $('#display_slider').val();
-    client.publish(device_topic + 'actions/slider', value);
-  }
-
 
   // FUNCIONES CIRCULOS DE ESTADOS
 
