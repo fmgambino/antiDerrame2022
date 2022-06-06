@@ -128,18 +128,13 @@ int estadoCap3 = 0; //NIVEL BAJO
 // NIVEL DE AGUA CONFIG
 char *estado;
 
-// VARIABLES TIEMPO DE CIRCULACION
-
-int timer;
-int ptime = 5; // En minutos.
-int contA = 0; // Variables de inicializacion.
 
 //************************************
 //***** HOSTING + BROKER MQTT ********
 //************************************
 // estos datos deben estar configurador también en las constantes de tu panel
 //  NO USES ESTOS DATOS PON LOS TUYOS!!!!
-const String serial_number = "797170";
+const String serial_number = "797179";
 const String insert_password = "285289";
 const String get_data_password = "420285";
 const char *server = "liandev.tk";
@@ -177,13 +172,13 @@ void oledWiFi();
 void oledWiFiConect();
 void push(String titulo, String mensaje);
 
-void Cap1();
-void Cap2();
-void Cap3();
+void Cap1(); // entrada Nivel Bajo
+void Cap2(); // entrada Nivel Medio
+void Cap3(); // entrada Nivel Alto
 
-void Optico();
-void Temp();
-
+void Optico(); // entrada Nivel Espuma
+void Temp();   // Temperatura MElasa
+ 
 void Amp1(); // entrada 4-20ma
 void Amp2(); // entrada 4-20ma
 
@@ -193,6 +188,10 @@ void Rele2();
 
 void MosFet1();
 void MosFet2();
+
+// Funcion de Hard Reset
+
+void fHardReset();
 
 
 //*************************************
@@ -206,12 +205,17 @@ long milliseconds = 0;
 
 byte sw1 = 0;      // BOMBA DE AGUA - Variable Global de Inicializacion
 
-float temp;
+int temp;
 int nivCap;
+int varConversor1;
+int varConversor2;
+
+int count = 300000; // Tiempo del HARD-RESET
+int i=0;
 
 // VARIABLS ESTADOS EN PHP
 
-int eHO2 = 1;
+int eHO2;
 int nivOptico;
 
 void setup()
@@ -224,7 +228,7 @@ void setup()
   oled.clearDisplay();
   oled.drawBitmap(0, 0, logo_hydrocrop, 128, 64, WHITE); //LOGO EN LCD
   oled.display();
-  delay(2000);
+  delay(200);
 
    myOled(); // PANTALLA MENU PRINCIPAL
 
@@ -258,7 +262,7 @@ void setup()
   while (!topic_obteined)
   {
     topic_obteined = get_topic(expected_topic_length);
-    delay(1000);
+    delay(100);
   }
 
   // set mqtt cert
@@ -272,9 +276,9 @@ void setup()
 void loop()
 {
   // Wait a few seconds between measurements.
-  delay(2000);
-
-  Serial.println("LECTURAS ENTRADAS ");
+  //delay(200);
+  i++;
+  Serial.println("CAPTURA DE DATOS");
 
   Cap1();
   Cap2();
@@ -285,19 +289,20 @@ void loop()
 
   Amp1();
   Amp2();
-
+  
   fbomba();
+  fHardReset();
 
   if (!client.connected())
   {
     reconnect();
   }
  // si el pulsador wifi esta en low, activamos el acces point de configuración
-   if (digitalRead(WIFI_PIN) == HIGH)
+  if (digitalRead(WIFI_PIN) == HIGH)
 
 
   // si estamos conectados a mqtt enviamos mensajes
-  if (millis() - milliseconds > 1000)
+  if (millis() - milliseconds > 500)
   {
     milliseconds = millis();
 
@@ -305,15 +310,15 @@ void loop()
     {
       // set mqtt cert
 
-      String to_send = String("co2") + "," + String(temp) + "," + String("hum") + "," + String(nivCap) + "," + String(nivOptico) + "," + String(sw1) + "," + String("sw2") + "," + String("sw3") + "," + String("cdtv") + "," + String(eHO2) + "," + String("eCooler") + "," + String("eDifusor");
+      String to_send = String(nivCap) + "," + String(temp) + "," + String(nivOptico) + "," + String(sw1) + "," + String(eHO2);
       to_send.toCharArray(msg, 60);
       mqttclient.publish(device_topic_publish, msg);
 
       // Serial.print("ENVIO DE CADENA A PHP...");
 
-      delay(100);
+      delay(10);
 
-       //send_to_database();
+      //send_to_database();
 
       /*
         if (ph >=0 || ph <=20){
@@ -323,6 +328,8 @@ void loop()
   }
 
   mqttclient.loop();
+
+  myOled();        // Se llama a la Funcion de Config Pantalla Oled 0,96"
 
 }
 
@@ -366,7 +373,7 @@ void reconnect()
   {
     Serial.print("Intentando conexión MQTT SSL");
     // we create client id
-    String clientId = "esp32_ia_";
+    String clientId = "esp32_fmg_";
     clientId += String(random(0xffff), HEX);
     // Trying SSL MQTT connection
     if (mqttclient.connect(clientId.c_str(), mqtt_user, mqtt_pass))
@@ -382,7 +389,7 @@ void reconnect()
       Serial.print(mqttclient.state());
       Serial.println(" Intentamos de nuevo en 5 segundos");
 
-      delay(1000);
+      delay(100);
       ReStartESP();
     }
   }
@@ -472,8 +479,8 @@ void send_to_database()
   else
   {
     Serial.println("Conectados a servidor para insertar en db - ok");
-    // Make a HTTP request:
-    String data = "idp=" + insert_password + "&sn=" + serial_number + "&co2=" + String("co2") + "&tempamb=" + String(temp) + "&hum=" + String(nivOptico) + "&ph=" + String("ph") + "\r\n";
+    // Haciendo solitud por HTTP a DB
+    String data = "idp=" + insert_password + "&sn=" + serial_number + "&nivCap=" + String(nivCap) + "&temp=" + String(temp) + "\r\n";
     client2.print(String("POST ") + "/app/insertdata/insert" + " HTTP/1.1\r\n" +
                   "Host: " + server + "\r\n" +
                   "Content-Type: application/x-www-form-urlencoded" + "\r\n" +
@@ -506,17 +513,48 @@ void send_to_database()
 // SENSOR OPTICO 1 - NIVEL BAJO
 void Cap1()
 {  
- 
+  estadoCap1 = digitalRead(sCap1);
+  if (estadoCap1 == HIGH)
+  { //aqui poner codigo para mandar dato si se detecto objeto
+    Serial.println("cap 1 activado ");
+    nivCap = 25;
+  }
+  else {
+    //aqui poner codigo para mandar dato si NO se detecto objeto
+    Serial.println("cap 1 Apagado ");
+    nivCap = 0;
+  }
 }
 
 void Cap2()
 {  
-  
+  estadoCap1 = digitalRead(sCap1);
+  if (estadoCap1 == HIGH)
+  { //aqui poner codigo para mandar dato si se detecto objeto
+    Serial.println("cap 1 activado ");
+    nivCap = 25;
+  }
+  else {
+    //aqui poner codigo para mandar dato si NO se detecto objeto
+    Serial.println("cap 1 Apagado ");
+    nivCap = 0;
+  }  
 }
 
 void Cap3()
 {
-  
+  estadoCap3 = digitalRead(sCap3);
+  if (estadoCap3 == HIGH)
+  {
+    //aqui poner codigo para mandar dato si se detecto objeto
+    Serial.println("cap 3 activado ");
+    nivCap = 75;
+  }
+  else {
+    //aqui poner codigo para mandar dato si NO se detecto objeto
+    Serial.println("cap 3 Apagado ");
+    nivCap = 50;
+  }
 }
 
 void Optico()
@@ -526,22 +564,23 @@ void Optico()
 
   nivOptico = (analogRead(sOptico));
 
-  if(nivOptico < 500)
+  if(nivOptico < 1000)
   {
     digitalWrite(bomba, HIGH); // ACTIVA BOMBA
     sw1 = 1;
     eHO2 = 1;
-    Serial.print("BOMBA ACTIVS");
-    delay(250);
+    nivCap = 100;
+    Serial.print("BOMBA ACTIVA");
+    //delay(250);
   }
 
-  if (nivOptico > 500 || sw1 ==0 )
+  if (nivOptico > 1000 || sw1 ==0 )
   {
     digitalWrite(bomba, LOW); // APAGA BOMBA
     sw1 = 0;
     eHO2 = 0;
-    Serial.print("BOMBA APAGADA");
-    delay(250);    
+    Serial.println("BOMBA APAGADA");
+    //delay(250);    
   }
   
   
@@ -549,26 +588,25 @@ void Optico()
 
 void Temp()
 {
-  Serial.print("Valor Sensor Temperatura: ");
-      int sum = 0;
-    for(int i=0;i<1000;i++){
-      sum = sum + analogRead(sTemp); //Almacenos la lectura analogica 
-      //buf[i]=analogRead(ptpin); //Almacenos la lectura analogica
-    //  delay(10);
-    } 
-    int promedio = sum / 1000; 
-    
-    int y = promedio;
-    float x = (1000*( y )/9107.0)+6.5;
-    temp = x;
-
-    Serial.print("temperatura= ");
-    Serial.println(temp); 
-   // delay(10);
+  int sum = 0;
+  for (int i = 0; i < 100; i++) {
+    sum = sum + analogRead(sTemp); // Almacenos la lectura analogica
+  }
+  int promedio = sum / 100;
+  int y = promedio;
+  int x = (1000 * ( y ) / 9107.0) + 6.5;
+  temp = x; // Variable de temperatura que se va a mostrar
+  Serial.print("TEMP= ");
+  Serial.println(temp); 
+  // delay(10);
 }
 
 void Amp1()
 {
+  int conversor1 = analogRead(sAmp1);
+  varConversor1 = map(conversor1, 0, 4095, 0, 5);
+  Serial.print("Conversor1  = ");
+  Serial.println(varConversor1);
 }
 
 void Amp2()
@@ -600,7 +638,7 @@ void myOled()
     oled.setCursor(1, 50);
     oled.print(F("NIVEL: VACIO    "));
 
-    delay(250);
+    //delay(250);
   }
   
   switch (nivCap)
@@ -611,7 +649,7 @@ void myOled()
     oled.setCursor(1, 50);
     oled.print(F("NIVEL: VACIO    "));
 
-    delay(250);
+    //delay(250);
     break;
   
     case 1:
@@ -620,7 +658,7 @@ void myOled()
     oled.setCursor(1, 50);
     oled.print(F("NIVEL: BAJO    "));
 
-    delay(250);
+    //delay(250);
     break;
 
     case 2:
@@ -629,7 +667,7 @@ void myOled()
     oled.setCursor(1, 50);
     oled.print(F("NIVEL: MEDIO    "));
 
-    delay(250);
+    //delay(250);
     break;
 
     case 3:
@@ -638,7 +676,7 @@ void myOled()
     oled.setCursor(1, 50);
     oled.print(F("NIVEL: ALTO    "));
 
-    delay(250);
+    //delay(250);
     break;
   
   }
@@ -687,7 +725,7 @@ void oledWiFi()
   oled.println(F("EXITOSA"));
 
   oled.display();
-  delay(500);
+  delay(100);
   oled.clearDisplay();
 }
 
@@ -695,7 +733,7 @@ void oledWiFi()
 void ReStartESP()
 {
 
-  delay(300);
+  delay(100);
   ESP.restart(); // PARA ESP32
 }
 
@@ -709,8 +747,8 @@ void fbomba()
       digitalWrite(bomba, HIGH); // ACTIVA BOMBA
       sw1 = 1;
       eHO2 = 1;
-      Serial.print("BOMBA ACTIVS");
-      delay(250);
+      Serial.print("BOMBA ACTIVA");
+     // delay(250);
 
   }
   if (sw1 == 0)
@@ -718,7 +756,23 @@ void fbomba()
     digitalWrite(bomba, LOW);
     sw1 = 0;
     eHO2 = 0;
-    Serial.print("BOMBA APADAITA");
+    Serial.println("BOMBA APAGADITA");
   }
+
+}
+
+//FUNCION PARA RESETEO DE PLACA - HARDRESET
+
+void fHardReset(){
+   Serial.print("RESETEO EN: ");
+   Serial.println(i);
+
+ if (i == count)
+ {
+   delay(300);
+   ESP.restart(); // PARA ESP32
+   Serial.print("HARD-RESET ACTIVADO: ");
+   i=0;
+ }
 
 }
