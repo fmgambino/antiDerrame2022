@@ -50,6 +50,11 @@ let Nivel = setInterval(() => {
 
 let Espuma = setInterval(() => {
     console.log('valor de Espuma =' + gEspuma);
+    if (gEspuma > 1000) {
+        
+    } else {
+        
+    }
     /*
     EspumaInicial++;
    

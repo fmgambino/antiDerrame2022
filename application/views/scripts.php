@@ -58,6 +58,7 @@
 
 <script type="text/javascript">
 let estadoConexion = 0;
+let mensajeOptico = 'Alto' ; 
 
   const options = {
     connectTimeout: 1000,
@@ -113,8 +114,16 @@ let estadoConexion = 0;
       var cdtv = splitted[8];
 
       $("#display_melasa").html(melasa);
-      $("#display_tempamb").html(temp);      
-      $("#display_optico").html(optico);      
+      $("#display_tempamb").html(temp); 
+      
+      if(optico > 1000){
+        mensajeOptico = 'Alto';
+      }
+      else{
+        mensajeOptico = 'Bajo';
+      }
+
+      $("#display_optico").html(mensajeOptico);      
 
       gTemp = temp;
       gNivel = melasa;
