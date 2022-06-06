@@ -36,10 +36,10 @@ let progreso = setInterval(() => {
 
 let Nivel = setInterval(() => {
     console.log('valor de melasa =' + gNivel);    
-    if(valorProgreso < gNivel){
+    if(Nivelinicial < gNivel){
         Nivelinicial++;        
     }
-    if(valorProgreso > gNivel){
+    if(Nivelinicial > gNivel){
         Nivelinicial--;        
     }  
     valorNivel.textContent = Nivelinicial + '%';
