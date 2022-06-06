@@ -35,15 +35,17 @@ let progreso = setInterval(() => {
 }, velocidad);
 
 let Nivel = setInterval(() => {
-    console.log('valor de melasa =' + gNivel);
-    /*Nivelinicial++;
-    
+    console.log('valor de melasa =' + gNivel);    
+    if(valorProgreso < gNivel){
+        Nivelinicial++;        
+    }
+    if(valorProgreso > gNivel){
+        Nivelinicial--;        
+    }  
     valorNivel.textContent = Nivelinicial + '%';
-    let desplazamientoNivel = Nivelinicial * 3.6;
-    
+    let desplazamientoNivel = Nivelinicial * 3.6;    
     progresNivel.style.background = 'conic-gradient( #a0e6de ' + desplazamientoNivel + 'deg , #2d5e8f ' + desplazamientoNivel + 'deg)';
-    */
-    
+        
 }, velocidad);
 
 let Espuma = setInterval(() => {
