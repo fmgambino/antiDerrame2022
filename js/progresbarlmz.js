@@ -17,8 +17,8 @@ let valorFinalEspuma = 50;
 let velocidad = 50;
 
 let gTemp = 0;
-let gnivel = 0;
-let gmelasa = 0;
+let gNivel = 0;
+//let gEspuma = 0;
 
 let progreso = setInterval(() => { 
 
@@ -35,14 +35,14 @@ let progreso = setInterval(() => {
 }, velocidad);
 
 let Nivel = setInterval(() => {
-    console.log('valor de melasa =' + gmelasa);
-    Nivelinicial++;
-    /*console.log('valor de progreso =' + valorProgreso);*/
+    console.log('valor de melasa =' + gNivel);
+    /*Nivelinicial++;
+    
     valorNivel.textContent = Nivelinicial + '%';
     let desplazamientoNivel = Nivelinicial * 3.6;
-    /*console.log(desplazamiento);*/
+    
     progresNivel.style.background = 'conic-gradient( #a0e6de ' + desplazamientoNivel + 'deg , #2d5e8f ' + desplazamientoNivel + 'deg)';
-    /*console.log(progresBar.style.background);*/
+    */
     
 }, velocidad);
 
