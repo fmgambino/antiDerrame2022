@@ -120,7 +120,7 @@ let estadoConexion = 0;
       gNivel = melasa;
       gEspuma = optico;      
 
-
+/*
       if (niv == 1) {
         $("#display_niv").html("ALTO");
       } else {
@@ -132,6 +132,7 @@ let estadoConexion = 0;
       } else {
         $("#display_sw1").prop('checked', "");
       }
+      */
 /*
       if (switch2 == "1") {
         $("#display_sw2").prop('checked', true);
