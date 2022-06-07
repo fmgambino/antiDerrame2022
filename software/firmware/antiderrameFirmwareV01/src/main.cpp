@@ -17,6 +17,13 @@
 #include <Adafruit_SSD1306.h> // libreria para controlador SSD1306
 #include <Adafruit_SH110X.h>
 
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+OneWire ourWire(35); // Se establece el pin 35  como bus OneWire
+
+DallasTemperature sensors(&ourWire); // Se declara una variable u objeto para nuestro sensor
+
 #define i2c_Address 0x3c // inicializa con I2C en la direccion 0x3C
 #define ANCHO 128        // reemplaza ocurrencia de ANCHO por 128
 #define ALTO 64          // reemplaza ocurrencia de ALTO por 64
@@ -103,31 +110,29 @@ const unsigned char PROGMEM logo_hydrocrop[] = {
 
 #define WIFI_PIN 23
 
-const int sCap1   = 25; //SENSOR DE NIVEL MELASA CAPACITIVO 01
-const int sCap2   = 26; //SENSOR DE NIVEL MELASA CAPACITIVO 02
-const int sCap3   = 27; //SENSOR DE NIVEL MELASA CAPACITIVO 03
-const int sOptico = 34; //SENSOR DE NIVEL ESPUMA OPTICO
-const int sTemp   = 35; //SENSOR DE TEMPERATURA MELADA
+const int sCap1 = 25;   // SENSOR DE NIVEL MELASA CAPACITIVO 01
+const int sCap2 = 26;   // SENSOR DE NIVEL MELASA CAPACITIVO 02
+const int sCap3 = 27;   // SENSOR DE NIVEL MELASA CAPACITIVO 03
+const int sOptico = 34; // SENSOR DE NIVEL ESPUMA OPTICO
+// const int sTemp   = 35; //SENSOR DE TEMPERATURA MELADA
 
 const int sAmp1 = 32; // Entrada 4-20 mA
 const int sAmp2 = 33; // Entrada 4-20 mA
 
 // SALIDAS
 
-#define bomba   13 //BOMBA ANTIDERRAME / relay1
-#define relay2   9
+#define bomba 13 // BOMBA ANTIDERRAME / relay1
+#define relay2 9
 #define mosfet1 10
 #define mosfet2 12
 
-
-//INICIALIZACION
-int estadoCap1 = 0; //NIVEL ALTO
-int estadoCap2 = 0; //NIVEL MEDIO
-int estadoCap3 = 0; //NIVEL BAJO
+// INICIALIZACION
+int estadoCap1 = 0; // NIVEL ALTO
+int estadoCap2 = 0; // NIVEL MEDIO
+int estadoCap3 = 0; // NIVEL BAJO
 
 // NIVEL DE AGUA CONFIG
 char *estado;
-
 
 //************************************
 //***** HOSTING + BROKER MQTT ********
@@ -156,7 +161,6 @@ WiFiClientSecure client2;
 
 Separador s;
 
-
 //************************************
 //***** DECLARACION FUNCIONES ********
 //************************************
@@ -176,9 +180,9 @@ void Cap1(); // entrada Nivel Bajo
 void Cap2(); // entrada Nivel Medio
 void Cap3(); // entrada Nivel Alto
 
-void Optico(); // entrada Nivel Espuma
+//void Optico(); // entrada Nivel Espuma
 void Temp();   // Temperatura MElasa
- 
+
 void Amp1(); // entrada 4-20ma
 void Amp2(); // entrada 4-20ma
 
@@ -193,7 +197,6 @@ void MosFet2();
 
 void fHardReset();
 
-
 //*************************************
 //********      GLOBALS         *******
 //*************************************
@@ -203,7 +206,7 @@ char device_topic_publish[40];
 char msg[60];
 long milliseconds = 0;
 
-byte sw1 = 0;      // BOMBA DE AGUA - Variable Global de Inicializacion
+byte sw1 = 0; // BOMBA DE AGUA - Variable Global de Inicializacion
 
 int temp;
 int nivCap;
@@ -211,7 +214,7 @@ int varConversor1;
 int varConversor2;
 
 int count = 300000; // Tiempo del HARD-RESET
-int i=0;
+int i = 0;
 
 // VARIABLS ESTADOS EN PHP
 
@@ -220,24 +223,24 @@ int nivOptico;
 
 void setup()
 {
-  Serial.begin(115200); // inicializa comunicacion serie a 1155200 bps
+  Serial.begin(115200);          // inicializa comunicacion serie a 1155200 bps
   Wire.begin();                  // inicializa bus I2C
   oled.begin(i2c_Address, true); // inicializa pantalla con direccion 0x3C
 
   // oled.stopscroll();
   oled.clearDisplay();
-  oled.drawBitmap(0, 0, logo_hydrocrop, 128, 64, WHITE); //LOGO EN LCD
+  oled.drawBitmap(0, 0, logo_hydrocrop, 128, 64, WHITE); // LOGO EN LCD
   oled.display();
   delay(200);
 
-   myOled(); // PANTALLA MENU PRINCIPAL
+  myOled(); // PANTALLA MENU PRINCIPAL
 
   Serial.println("inicio");
 
   pinMode(sCap1, INPUT);
   pinMode(sCap2, INPUT);
   pinMode(sCap3, INPUT);
-  pinMode(nivOptico,INPUT);
+  pinMode(nivOptico, INPUT);
 
   pinMode(bomba, OUTPUT);
   pinMode(relay2, OUTPUT);
@@ -276,7 +279,7 @@ void setup()
 void loop()
 {
   // Wait a few seconds between measurements.
-  //delay(200);
+   delay(2000);
   i++;
   Serial.println("CAPTURA DE DATOS");
 
@@ -284,12 +287,12 @@ void loop()
   Cap2();
   Cap3();
 
-  Optico();
+  //Optico();
   Temp();
 
   Amp1();
   Amp2();
-  
+
   fbomba();
   fHardReset();
 
@@ -297,40 +300,38 @@ void loop()
   {
     reconnect();
   }
- // si el pulsador wifi esta en low, activamos el acces point de configuración
+  // si el pulsador wifi esta en low, activamos el acces point de configuración
   if (digitalRead(WIFI_PIN) == HIGH)
 
-
-  // si estamos conectados a mqtt enviamos mensajes
-  if (millis() - milliseconds > 500)
-  {
-    milliseconds = millis();
-
-    if (mqttclient.connected())
+    // si estamos conectados a mqtt enviamos mensajes
+    if (millis() - milliseconds > 500)
     {
-      // set mqtt cert
+      milliseconds = millis();
 
-      String to_send = String(nivCap) + "," + String(temp) + "," + String(nivOptico) + "," + String(sw1) + "," + String(eHO2);
-      to_send.toCharArray(msg, 60);
-      mqttclient.publish(device_topic_publish, msg);
+      if (mqttclient.connected())
+      {
+        // set mqtt cert
 
-      // Serial.print("ENVIO DE CADENA A PHP...");
+        String to_send = String(nivCap) + "," + String(temp) + "," + String(nivOptico) + "," + String(sw1) + "," + String(eHO2);
+        to_send.toCharArray(msg, 60);
+        mqttclient.publish(device_topic_publish, msg);
 
-      delay(10);
+        // Serial.print("ENVIO DE CADENA A PHP...");
 
-      //send_to_database();
+        delay(10);
 
-      /*
-        if (ph >=0 || ph <=20){
-          send_to_database();
-        } */
+        // send_to_database();
+
+        /*
+          if (ph >=0 || ph <=20){
+            send_to_database();
+          } */
+      }
     }
-  }
 
   mqttclient.loop();
 
-  myOled();        // Se llama a la Funcion de Config Pantalla Oled 0,96"
-
+  myOled(); // Se llama a la Funcion de Config Pantalla Oled 0,96"
 }
 
 //************************************
@@ -363,7 +364,7 @@ void callback(char *topic, byte *payload, unsigned int length)
     Serial.print("Estado Bomba: ");
     Serial.println(sw1);
     fbomba();
-  }  
+  }
 }
 
 void reconnect()
@@ -512,33 +513,29 @@ void send_to_database()
 
 // SENSOR OPTICO 1 - NIVEL BAJO
 void Cap1()
-{  
+{
   estadoCap1 = digitalRead(sCap1);
   if (estadoCap1 == HIGH)
-  { //aqui poner codigo para mandar dato si se detecto objeto
+  { // aqui poner codigo para mandar dato si se detecto objeto
     Serial.println("cap 1 activado ");
     nivCap = 25;
   }
-  else {
-    //aqui poner codigo para mandar dato si NO se detecto objeto
+  else
+  {
+    // aqui poner codigo para mandar dato si NO se detecto objeto
     Serial.println("cap 1 Apagado ");
     nivCap = 0;
   }
 }
 
 void Cap2()
-{  
-  estadoCap1 = digitalRead(sCap1);
+{
+  estadoCap1 = digitalRead(sCap2);
   if (estadoCap1 == HIGH)
-  { //aqui poner codigo para mandar dato si se detecto objeto
+  { // aqui poner codigo para mandar dato si se detecto objeto
     Serial.println("cap 1 activado ");
-    nivCap = 25;
+    nivCap = 50;
   }
-  else {
-    //aqui poner codigo para mandar dato si NO se detecto objeto
-    Serial.println("cap 1 Apagado ");
-    nivCap = 0;
-  }  
 }
 
 void Cap3()
@@ -546,58 +543,44 @@ void Cap3()
   estadoCap3 = digitalRead(sCap3);
   if (estadoCap3 == HIGH)
   {
-    //aqui poner codigo para mandar dato si se detecto objeto
+    // aqui poner codigo para mandar dato si se detecto objeto
     Serial.println("cap 3 activado ");
     nivCap = 75;
   }
-  else {
-    //aqui poner codigo para mandar dato si NO se detecto objeto
-    Serial.println("cap 3 Apagado ");
-    nivCap = 50;
-  }
 }
 
-void Optico()
-{
-  Serial.print("Valor Sensor Optico     : ");
-  Serial.println(analogRead(sOptico));
+// void Optico()
+// {
 
-  nivOptico = (analogRead(sOptico));
-
-  if(nivOptico < 1000)
-  {
-    digitalWrite(bomba, HIGH); // ACTIVA BOMBA
-    sw1 = 1;
-    eHO2 = 1;
-    nivCap = 100;
-    Serial.print("BOMBA ACTIVA");
-    //delay(250);
-  }
-
-  if (nivOptico > 1000 || sw1 ==0 )
-  {
-    digitalWrite(bomba, LOW); // APAGA BOMBA
-    sw1 = 0;
-    eHO2 = 0;
-    Serial.println("BOMBA APAGADA");
-    //delay(250);    
-  }
-  
-  
-}
+// }
 
 void Temp()
 {
-  int sum = 0;
-  for (int i = 0; i < 100; i++) {
-    sum = sum + analogRead(sTemp); // Almacenos la lectura analogica
-  }
-  int promedio = sum / 100;
-  int y = promedio;
-  int x = (1000 * ( y ) / 9107.0) + 6.5;
-  temp = x; // Variable de temperatura que se va a mostrar
-  Serial.print("TEMP= ");
-  Serial.println(temp); 
+  //**********************************//
+  // SENSOR TEMP DS1818B20 DIGITAL   //
+  //********************************//
+
+  sensors.requestTemperatures();           // Se envía el comando para leer la temperatura
+  float temp = sensors.getTempCByIndex(0); // Se obtiene la temperatura en ºC
+
+  Serial.print("Temperatura= ");
+  Serial.print(temp);
+  Serial.println(" C");
+  delay(100);
+
+  //*******************************//
+  // SENSOR TEMP PT100 ANALOGICO  //
+  //*****************************//
+  // int sum = 0;
+  // for (int i = 0; i < 100; i++) {
+  //   sum = sum + analogRead(sTemp); // Almacenos la lectura analogica
+  // }
+  // int promedio = sum / 100;
+  // int y = promedio;
+  // int x = (1000 * ( y ) / 9107.0) + 6.5;
+  // temp = x; // Variable de temperatura que se va a mostrar
+  // Serial.print("TEMP= ");
+  // Serial.println(temp);
   // delay(10);
 }
 
@@ -617,7 +600,7 @@ void Amp2()
 
 void myOled()
 {
-  
+
   oled.clearDisplay();
   oled.setTextSize(1);                             // Normal 1:1 pixel scale
   oled.setTextColor(SSD1306_BLACK, SSD1306_WHITE); // Draw white text
@@ -638,9 +621,9 @@ void myOled()
     oled.setCursor(1, 50);
     oled.print(F("NIVEL: VACIO    "));
 
-    //delay(250);
+    // delay(250);
   }
-  
+
   switch (nivCap)
   {
   case 0:
@@ -649,36 +632,35 @@ void myOled()
     oled.setCursor(1, 50);
     oled.print(F("NIVEL: VACIO    "));
 
-    //delay(250);
+    // delay(250);
     break;
-  
-    case 1:
+
+  case 1:
     /* code */
     oled.setTextColor(SSD1306_WHITE); // Draw white text
     oled.setCursor(1, 50);
     oled.print(F("NIVEL: BAJO    "));
 
-    //delay(250);
+    // delay(250);
     break;
 
-    case 2:
+  case 2:
     /* code */
     oled.setTextColor(SSD1306_WHITE); // Draw white text
     oled.setCursor(1, 50);
     oled.print(F("NIVEL: MEDIO    "));
 
-    //delay(250);
+    // delay(250);
     break;
 
-    case 3:
+  case 3:
     /* code */
     oled.setTextColor(SSD1306_WHITE); // Draw white text
     oled.setCursor(1, 50);
     oled.print(F("NIVEL: ALTO    "));
 
-    //delay(250);
+    // delay(250);
     break;
-  
   }
 
   /*
@@ -742,37 +724,46 @@ void ReStartESP()
 void fbomba()
 {
 
-  if (sw1 == 1 )
+  Serial.print("Valor Sensor Optico     : ");
+  Serial.println(analogRead(sOptico));
+
+  nivOptico = (analogRead(sOptico));
+
+  if (sw1 == 1 || nivOptico < 1000 )
   {
+    if (nivOptico < 1000)
+    {
       digitalWrite(bomba, HIGH); // ACTIVA BOMBA
       sw1 = 1;
       eHO2 = 1;
+      nivCap = 100;
       Serial.print("BOMBA ACTIVA");
-     // delay(250);
-
+      // delay(250);
+    }
   }
-  if (sw1 == 0)
+
+  if (nivOptico > 1000 || sw1 == 0)
   {
-    digitalWrite(bomba, LOW);
+    digitalWrite(bomba, LOW); // APAGA BOMBA
     sw1 = 0;
     eHO2 = 0;
-    Serial.println("BOMBA APAGADITA");
+    Serial.println("BOMBA APAGADA");
+    // delay(250);
   }
-
 }
 
-//FUNCION PARA RESETEO DE PLACA - HARDRESET
+// FUNCION PARA RESETEO DE PLACA - HARDRESET
 
-void fHardReset(){
-   Serial.print("RESETEO EN: ");
-   Serial.println(i);
+void fHardReset()
+{
+  Serial.print("RESETEO EN: ");
+  Serial.println(i);
 
- if (i == count)
- {
-   delay(300);
-   ESP.restart(); // PARA ESP32
-   Serial.print("HARD-RESET ACTIVADO: ");
-   i=0;
- }
-
+  if (i == count)
+  {
+    delay(300);
+    ESP.restart(); // PARA ESP32
+    Serial.print("HARD-RESET ACTIVADO: ");
+    i = 0;
+  }
 }
