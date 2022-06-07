@@ -481,7 +481,7 @@ void send_to_database()
   {
     Serial.println("Conectados a servidor para insertar en db - ok");
     // Haciendo solitud por HTTP a DB
-    String data = "idp=" + insert_password + "&sn=" + serial_number + "&nivCap=" + String(nivCap) + "&temp=" + String(temp) + "\r\n";
+    String data = "idp=" + insert_password + "&sn=" + serial_number + "&nivel=" + String(nivCap) + "&temp=" + String(temp) + "\r\n";
     client2.print(String("POST ") + "/app/insertdata/insert" + " HTTP/1.1\r\n" +
                   "Host: " + server + "\r\n" +
                   "Content-Type: application/x-www-form-urlencoded" + "\r\n" +
