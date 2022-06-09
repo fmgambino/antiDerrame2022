@@ -123,7 +123,7 @@ const int sAmp2 = 33; // Entrada 4-20 mA
 
 #define relay1 13 
 #define relay2 9
-#define bomba 10 // BOMBA ANTIDERRAME / mosfet01
+#define bomba 10 // BOMBA ANTIDERRAME / mosfet01 Actualizado
 #define mosfet2 12
 
 // INICIALIZACION
