@@ -28,7 +28,7 @@
                     <div class=" mdl-card--expand color-azul-1 form-inline">
                       <div class="col-6 pt-3 pb-3 pl-0 pr-0">
                         <div class="mdl-card__title">
-                          <h2 class="mdl-card__title-text">Temperatura</h2>
+                          <h2 class="mdl-card__title-text">Temp.</h2>
                           <img src="<?php echo base_url('images/iconoTemp.svg') ?>" class="icono">
                         </div>
                         <div class="mdl-card__supporting-text mdl-card--expand hc-contenedor row">
